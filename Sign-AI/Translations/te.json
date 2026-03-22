@@ -1,0 +1,12 @@
+{
+  "title": "SignLingua — చేతి గుర్తింపు",
+  "instruction": "కెమెరా అనుమతి ఇవ్వండి. మీ చేతిని చూపండి.",
+  "status_waiting": "స్థితి: వేచి ఉంది",
+  "translate_header": "వాక్య అనువాదం",
+  "translate_btn": "అనువదించు",
+  "translated_label": "అనువాదం:",
+  "sentence_label": "వాక్యం:",
+  "clear_btn": "తొలగించు",
+  "speak_btn": "చెప్పు",
+  "chooseLang": "భాష ఎంచుకోండి:"
+}

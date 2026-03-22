@@ -1,0 +1,12 @@
+{
+  "title": "SignLingua — கை அடையாளம்",
+  "instruction": "கேமரா அணுகலை அனுமதி வழங்கவும். உங்கள் கையை காட்டுங்கள்.",
+  "status_waiting": "நிலை: காத்திருக்கிறது",
+  "translate_header": "வாக்கியம் மொழிபெயர்ப்பு",
+  "translate_btn": "மொழிபெயர்",
+  "translated_label": "மொழிபெயர்ப்பு:",
+  "sentence_label": "வாக்கியம்:",
+  "clear_btn": "அழிக்க",
+  "speak_btn": "பேச",
+  "chooseLang": "UI மொழி:"
+}

@@ -1,0 +1,1551 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Signify – Challenge Mode</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/templatemo-first-portfolio-style.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6d8bfa;
+            --primary-d: #5371e0;
+            --amber: #f59e0b;
+            --text: #0f172a;
+            --muted: #64748b;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --success: #22c55e;
+            --success-bg: #f0fdf4;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+        }
+
+        .navbar-brand {
+            color: var(--primary) !important;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 2rem;
+            text-decoration: none;
+        }
+.site-footer .copyright-text-wrap {
+  border: none !important;
+}
+
+.site-footer .copyright-text {
+  border: none !important;
+}
+
+.site-footer p {
+  border: none !important;
+}
+        .custom-btn {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            font-weight: bold;
+        }
+
+        .custom-btn:hover {
+            background: #1e293b;
+            border-color: #1e293b;
+            color: white;
+        }
+
+        .screen {
+            display: none;
+            min-height: calc(100vh - 72px);
+        }
+
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #lobbyScreen {
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .lobby-card {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 24px;
+            padding: 48px;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 4px 24px rgba(109, 139, 250, 0.07);
+        }
+
+        .lobby-icon {
+            width: 72px;
+            height: 72px;
+            background: #eff3ff;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 20px;
+        }
+
+        .lobby-card h1 {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .lobby-card h1 span {
+            color: var(--primary);
+        }
+
+        .lobby-card>p {
+            color: var(--muted);
+            margin-bottom: 32px;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 20px 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .room-input {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 20px;
+            font-family: 'DM Sans', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            text-align: center;
+            outline: none;
+            font-weight: 700;
+            transition: border-color 0.2s;
+        }
+
+        .room-input:focus {
+            border-color: var(--primary);
+        }
+
+        .room-input::placeholder {
+            color: #cbd5e1;
+            letter-spacing: 2px;
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .btn-primary-game {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            background: var(--primary);
+            color: #fff;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary-game:hover {
+            background: var(--primary-d);
+        }
+
+        .btn-outline-game {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            background: transparent;
+            color: var(--muted);
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-outline-game:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .how-it-works {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+            text-align: left;
+        }
+
+        .hw-step {
+            flex: 1;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+        }
+
+        .hw-step .num {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .hw-step .desc {
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        #waitingScreen {
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .waiting-card {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 24px;
+            padding: 48px;
+            max-width: 460px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+        }
+
+        .waiting-card h2 {
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 6px;
+        }
+
+        .waiting-card>p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .room-code-display {
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: 8px;
+            color: var(--primary);
+            background: #eff3ff;
+            border: 2px solid #c7d4fd;
+            border-radius: 14px;
+            padding: 18px;
+            margin: 16px 0;
+        }
+
+        .copy-btn {
+            font-size: 12px;
+            color: var(--muted);
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 4px 10px;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            margin-bottom: 20px;
+        }
+
+        .copy-btn:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0.4
+            }
+        }
+
+        .player-slots {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .player-slot {
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .player-slot.filled {
+            border-color: var(--success);
+            background: var(--success-bg);
+        }
+
+        .slot-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        .slot-name {
+            font-weight: 700;
+            color: var(--text);
+            font-size: 14px;
+        }
+
+        .slot-status {
+            font-size: 11px;
+            color: var(--success);
+            margin-top: 2px;
+        }
+
+        .slot-status.waiting {
+            color: var(--muted);
+        }
+
+        #gameScreen {
+            padding: 20px 24px;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .game-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px 20px;
+        }
+
+        .score-board {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-item .s-name {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 2px;
+        }
+
+        .score-item .s-val {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--text);
+            line-height: 1;
+        }
+
+        .score-item .s-val.winning {
+            color: var(--primary);
+        }
+
+        .score-divider {
+            font-size: 1.2rem;
+            color: var(--border);
+            font-weight: 900;
+        }
+
+        .round-info {
+            text-align: right;
+        }
+
+        .round-info .r-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+        }
+
+        .round-info .r-num {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--text);
+        }
+
+        .round-dots {
+            display: flex;
+            gap: 5px;
+            justify-content: flex-end;
+            margin-top: 4px;
+        }
+
+        .round-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--border);
+        }
+
+        .round-dot.my-win {
+            background: var(--primary);
+        }
+
+        .round-dot.opp-win {
+            background: #ef4444;
+        }
+
+        .target-card {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .target-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        .type-badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+
+        .badge-word {
+            background: #fffbeb;
+            color: #92400e;
+            border: 1px solid #fde68a;
+        }
+
+        .badge-letter {
+            background: #eff3ff;
+            color: #3730a3;
+            border: 1px solid #c7d4fd;
+        }
+
+        .target-word {
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            color: var(--text);
+            letter-spacing: -1px;
+        }
+
+        .cameras-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .cam-panel {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 18px;
+            overflow: hidden;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .cam-panel.winner {
+            border-color: var(--success);
+            box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.15);
+        }
+
+        .cam-panel.loser {
+            border-color: #ef4444;
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+        }
+
+        .cam-top {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cam-top .p-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .cam-top .cam-status {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .cam-top .cam-status.detecting {
+            color: var(--amber);
+        }
+
+        .cam-top .cam-status.matched {
+            color: var(--success);
+        }
+
+        .video-box {
+            position: relative;
+            aspect-ratio: 4/3;
+            background: #f1f5f9;
+        }
+
+        .video-box video,
+        .video-box canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transform: scaleX(-1);
+        }
+
+        .video-box canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+
+        .opp-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: var(--muted);
+        }
+
+        .opp-placeholder i {
+            font-size: 3rem;
+            color: #cbd5e1;
+        }
+
+        .opp-placeholder span {
+            font-size: 13px;
+        }
+
+        .cam-bottom {
+            padding: 10px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted);
+            min-height: 36px;
+            display: flex;
+            align-items: center;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(6px);
+            z-index: 500;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .overlay.visible {
+            display: flex;
+        }
+
+        .overlay-card {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 24px;
+            padding: 48px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1
+            }
+        }
+
+        .overlay-emoji {
+            font-size: 4rem;
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        .overlay-card h2 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .overlay-card p {
+            color: var(--muted);
+            margin-bottom: 24px;
+            font-size: 15px;
+        }
+
+        .xp-tag {
+            display: inline-block;
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: 8px;
+            padding: 8px 20px;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #92400e;
+            margin-bottom: 16px;
+        }
+
+        .overlay-btn {
+            background: var(--primary);
+            border: none;
+            color: #fff;
+            font-weight: 700;
+            font-size: 15px;
+            padding: 13px 32px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: background 0.2s;
+        }
+
+        .overlay-btn:hover {
+            background: var(--primary-d);
+        }
+
+        .overlay-btn.secondary {
+            background: var(--bg);
+            color: var(--muted);
+            border: 2px solid var(--border);
+            margin-left: 8px;
+        }
+
+        .overlay-btn.secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--bg);
+        }
+
+        .countdown-wrap {
+            margin: 20px auto 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .countdown-ring {
+            position: relative;
+            width: 64px;
+            height: 64px;
+        }
+
+        .countdown-ring svg {
+            transform: rotate(-90deg);
+        }
+
+        .countdown-ring circle {
+            fill: none;
+            stroke: #e2e8f0;
+            stroke-width: 5;
+        }
+
+        .countdown-ring circle.prog {
+            stroke: var(--primary);
+            stroke-dasharray: 170;
+            stroke-dashoffset: 0;
+            transition: stroke-dashoffset 0.1s linear;
+        }
+
+        .countdown-ring .cnum {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .next-lbl {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        @media(max-width:640px) {
+            .cameras-grid {
+                grid-template-columns: 1fr
+            }
+
+            .lobby-card,
+            .waiting-card {
+                padding: 32px 24px
+            }
+
+            .how-it-works {
+                flex-direction: column
+            }
+        }
+
+.lobby-card {
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  padding: 30px;
+  max-width: 600px;
+  margin-left: auto;  
+}
+
+.hw-step .num {
+  background: #648FFF;
+  color: white;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 6px;
+  font-weight: bold;
+}
+
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-white shadow-sm">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span
+                    class="navbar-toggler-icon"></span></button>
+            <a href="index.html" class="navbar-brand mx-auto mx-lg-0">Signify</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-lg-5">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="learn.html">Learn</a></li>
+                    <li class="nav-item"><a class="nav-link" href="leaderboard.html">Leaderboard</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="game.html">Game</a></li>
+                    <li class="nav-item"><a class="nav-link" href="profile.html">Profile</a></li>
+                </ul>
+                <div class="d-lg-flex align-items-center d-none ms-auto">
+                    <button id="auth-btn" class="custom-btn btn">Sign In</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="screen active" id="lobbyScreen">
+  <div class="container" style="padding-top:120px;">
+    <div class="row align-items-center">
+
+      <!-- LEFT SIDE -->
+      <div class="col-lg-6 mb-5 mb-lg-0 text-center">
+
+        <div class="lobby-icon">&#x26A1;</div>
+
+        <h1>Challenge <span style="color:#648FFF;">Mode</span></h1>
+
+        <p>
+          Race a friend in real-time. Sign the same word or letter first to win the round.
+          Best of 5 — winner earns +200 XP!
+        </p>
+
+        <button class="btn-primary-game" id="createRoomBtn">
+          <i class="bi bi-plus-circle"></i> Create Room
+        </button>
+
+      </div>
+
+      <!-- RIGHT SIDE -->
+      <div class="col-lg-6">
+        <div class="lobby-card p-4 shadow-sm">
+
+          <div class="divider">or join with a code</div>
+
+          <input class="room-input form-control mb-3"
+                 id="roomCodeInput"
+                 placeholder="Enter code"
+                 maxlength="6">
+
+          <button class="btn-outline-game w-100 mb-3" id="joinRoomBtn">
+            <i class="bi bi-box-arrow-in-right"></i> Join Room
+          </button>
+
+          <p id="lobbyError"
+             style="color:#ef4444;font-size:13px;margin-top:12px;display:none;">
+          </p>
+
+          <!-- STEPS HORIZONTAL -->
+          <div class="row text-center mt-4">
+
+            <div class="col-4">
+              <div class="hw-step">
+                <div class="num">1</div>
+                <div class="desc small">Create a room and share the code with your opponent</div>
+              </div>
+            </div>
+
+            <div class="col-4">
+              <div class="hw-step">
+                <div class="num">2</div>
+                <div class="desc small">Both players sign the same word or letter on camera</div>
+              </div>
+            </div>
+
+            <div class="col-4">
+              <div class="hw-step">
+                <div class="num">3</div>
+                <div class="desc small">First to sign correctly wins the round. Best of 5!</div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+</div>
+
+    </div>
+  </div>
+</div>
+    <div class="screen" id="waitingScreen">
+        <div class="waiting-card">
+            <div style="font-size:2.5rem;margin-bottom:12px;">&#x1F3AE;</div>
+            <h2>Room Created!</h2>
+            <p>Share this code with your opponent:</p>
+            <div class="room-code-display" id="displayRoomCode">------</div>
+            <button class="copy-btn" id="copyCodeBtn"><i class="bi bi-clipboard"></i> Copy code</button>
+            <p class="pulse" style="color:var(--muted);font-size:13px;margin-bottom:20px;">Waiting for opponent to
+                join&#x2026;</p>
+            <div class="player-slots">
+                <div class="player-slot filled">
+                    <div class="slot-label">You (Host)</div>
+                    <div class="slot-name" id="hostName">&#x2014;</div>
+                    <div class="slot-status">&#x2713; Ready</div>
+                </div>
+                <div class="player-slot" id="guestSlot">
+                    <div class="slot-label">Opponent</div>
+                    <div class="slot-name" id="guestName">Waiting&#x2026;</div>
+                    <div class="slot-status waiting">Not joined yet</div>
+                </div>
+            </div>
+            <button class="btn-outline-game" id="cancelRoomBtn">Cancel</button>
+        </div>
+    </div>
+
+    <div class="screen" id="gameScreen">
+        <div class="game-header">
+            <div class="score-board">
+                <div class="score-item">
+                    <div class="s-name" id="myScoreName">You</div>
+                    <div class="s-val" id="myScore">0</div>
+                </div>
+                <div class="score-divider">&#x2014;</div>
+                <div class="score-item">
+                    <div class="s-name" id="oppScoreName">Opponent</div>
+                    <div class="s-val" id="oppScore">0</div>
+                </div>
+            </div>
+            <div class="round-info">
+                <div class="r-label">Round</div>
+                <div class="r-num"><span id="roundNum">1</span> / 5</div>
+                <div class="round-dots" id="roundDots">
+                    <div class="round-dot"></div>
+                    <div class="round-dot"></div>
+                    <div class="round-dot"></div>
+                    <div class="round-dot"></div>
+                    <div class="round-dot"></div>
+                </div>
+            </div>
+        </div>
+        <div class="target-card">
+            <div class="target-label">Sign this now</div>
+            <div><span class="type-badge badge-word" id="targetTypeBadge">Word</span></div>
+            <div class="target-word" id="targetDisplay">Hello</div>
+        </div>
+        <div class="cameras-grid">
+            <div class="cam-panel" id="myCamPanel">
+                <div class="cam-top"><span class="p-name" id="myCamName">You</span><span class="cam-status detecting"
+                        id="myCamStatus"><i class="bi bi-camera-video"></i> Scanning&#x2026;</span></div>
+                <div class="video-box"><video id="myVideo" autoplay playsinline muted></video><canvas
+                        id="myCanvas"></canvas></div>
+                <div class="cam-bottom" id="myFeedback">Show your hand to the camera</div>
+            </div>
+            <div class="cam-panel" id="oppCamPanel">
+                <div class="cam-top"><span class="p-name" id="oppCamName">Opponent</span><span class="cam-status"
+                        id="oppCamStatus"><i class="bi bi-wifi"></i> Connecting&#x2026;</span></div>
+                <div class="video-box">
+                    <video id="oppVideo" autoplay playsinline muted style="display:none;"></video>
+                    <div class="opp-placeholder" id="oppPlaceholder"><i class="bi bi-person-video3"></i><span
+                            id="oppPlaceholderText">Connecting&#x2026;</span></div>
+                </div>
+                <div class="cam-bottom" id="oppFeedback" style="color:var(--muted);">Waiting for result&#x2026;</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="roundResult">
+        <div class="overlay-card" style="max-width:480px;">
+            <span class="overlay-emoji" id="roundEmoji">&#x1F3C6;</span>
+            <h2 id="roundResultTitle">You got it!</h2>
+            <p id="roundResultSub">Round 1 complete</p>
+            <div id="signImageBox" style="margin:16px 0;display:none;">
+                <p style="font-size:12px;color:#64748b;margin-bottom:8px;">Correct sign for <strong
+                        id="signImageLabel"></strong></p>
+                <img id="signImage" src="" alt="ASL sign"
+                    style="width:180px;height:180px;object-fit:contain;border-radius:12px;border:2px solid #e2e8f0;background:#f8fafc;">
+            </div>
+            <div class="countdown-wrap">
+                <div class="countdown-ring">
+                    <svg width="64" height="64" viewBox="0 0 64 64">
+                        <circle cx="32" cy="32" r="27" />
+                        <circle class="prog" id="cdCircle" cx="32" cy="32" r="27" />
+                    </svg>
+                    <div class="cnum" id="cdNum">5</div>
+                </div>
+                <span class="next-lbl">Next round starting&#x2026;</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="gameOver">
+        <div class="overlay-card">
+            <span class="overlay-emoji" id="gameOverEmoji">&#x1F3C6;</span>
+            <h2 id="gameOverTitle">You Win!</h2>
+            <div class="xp-tag" id="xpEarnedDisplay" style="display:none;">+200 XP</div>
+            <p id="gameOverSub">Great signing today!</p>
+            <button class="overlay-btn" onclick="window.location.reload()">Play Again</button>
+            <button class="overlay-btn secondary" onclick="window.location.href='index.html'">Home</button>
+        </div>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="module">
+        import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getDatabase, ref, set, get, update, onValue, remove, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getFirestore, doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+        apiKey: "AIzaSyAtvEg9LMPYz_ksNsPkWXjSof85XD0BhWc",
+        authDomain: "signify-0326.firebaseapp.com",
+        projectId: "signify-0326",
+        storageBucket: "signify-0326.firebasestorage.app",
+        messagingSenderId: "277885993716",
+        appId: "1:277885993716:web:8aa7aef7777f14417e14a1",
+        databaseURL: "https://signify-0326-default-rtdb.asia-southeast1.firebasedatabase.app/"
+    };
+
+        const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+        const fs = getFirestore(app);
+
+        const WORDS = ['Hello', 'Thank You', 'I Love You', 'Yes'];
+        // Best of 5: 3 words + 2 letters = 5 rounds
+        const TOTAL_ROUNDS = 5;
+        const ROUND_DELAY = 5000;
+        const CIRCUMFERENCE = 2 * Math.PI * 27;
+
+        let currentUser = null;
+        let roomCode = null, isHost = false, myRole = null;
+        let rounds = [], currentRound = 0;
+        let myScore = 0, oppScore = 0;
+        let roundActive = false, roundLocked = false;
+        let peerConnection = null, localStream = null, webrtcReady = false;
+        let cdInterval = null;
+        let scheduledNextRoundAt = null;
+        let roomUnsubscribe = null;
+
+        const ICE = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }, { urls: 'stun:stun1.l.google.com:19302' }] };
+
+        onAuthStateChanged(auth, function (u) { currentUser = u; });
+
+        function resetState() {
+            window.__gameStarted = false; window.__cameraStarted = false; window.__gameOver = false;
+            window.__matchFrames = 0; window.__wordStartTime = Date.now();
+            window.__answerSent = false; window.__answerReceived = false;
+            window.__addedCandidates = new Set();
+            window.__localRoundHandled = false;
+            window.__handledRoundKey = null;
+            window.__gameWinner = null;
+            scheduledNextRoundAt = null;
+            if (cdInterval) { clearInterval(cdInterval); cdInterval = null; }
+            if (roomUnsubscribe) { roomUnsubscribe(); roomUnsubscribe = null; }
+            if (peerConnection) { peerConnection.close(); peerConnection = null; }
+            webrtcReady = false;
+            if (localStream) { localStream.getTracks().forEach(function (t) { t.stop(); }); localStream = null; }
+            var mv = document.getElementById('myVideo');
+            var ov = document.getElementById('oppVideo');
+            if (mv) mv.srcObject = null;
+            if (ov) { ov.srcObject = null; ov.style.display = 'none'; }
+            var ph = document.getElementById('oppPlaceholder');
+            if (ph) { ph.style.display = 'flex'; ph.querySelector('span').textContent = 'Connecting...'; }
+            currentRound = 0; myScore = 0; oppScore = 0;
+            roundActive = false; roundLocked = false; rounds = [];
+        }
+
+        function genCode() { return Math.random().toString(36).substring(2, 8).toUpperCase(); }
+
+        function generateRounds() {
+            var w = WORDS.slice().sort(function () { return Math.random() - 0.5; }).slice(0, 3);
+            var l = ['C', 'G', 'L', 'Y', 'V'].sort(function () { return Math.random() - 0.5; }).slice(0, 2);
+            return w.map(function (t) { return { type: 'word', target: t }; })
+                .concat(l.map(function (t) { return { type: 'letter', target: t }; }))
+                .sort(function () { return Math.random() - 0.5; });
+        }
+
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(function (s) { s.classList.remove('active'); });
+            document.getElementById(id).classList.add('active');
+        }
+
+        function showError(msg) { var el = document.getElementById('lobbyError'); el.textContent = msg; el.style.display = 'block'; }
+
+        function updateScoreStyles() {
+            document.getElementById('myScore').className = myScore > oppScore ? 's-val winning' : 's-val';
+            document.getElementById('oppScore').className = oppScore > myScore ? 's-val winning' : 's-val';
+        }
+
+        document.getElementById('copyCodeBtn').addEventListener('click', function () {
+            navigator.clipboard.writeText(roomCode);
+            document.getElementById('copyCodeBtn').innerHTML = '<i class="bi bi-check"></i> Copied!';
+            setTimeout(function () { document.getElementById('copyCodeBtn').innerHTML = '<i class="bi bi-clipboard"></i> Copy code'; }, 2000);
+        });
+
+        document.getElementById('createRoomBtn').addEventListener('click', async function () {
+            if (!currentUser) { showError('Please sign in first.'); return; }
+            resetState();
+            roomCode = genCode(); isHost = true; myRole = 'host';
+            rounds = generateRounds();
+            await set(ref(db, 'rooms/' + roomCode), {
+                host: { uid: currentUser.uid, name: currentUser.displayName || 'Player 1' },
+                guest: null, rounds: rounds, scores: { host: 0, guest: 0 },
+                currentRound: 0, status: 'waiting', roundWinner: null, roundTarget: null, roundDisplayNum: 0, nextRoundAt: null,
+                webrtc: { offer: null, answer: null, hostCandidates: [], guestCandidates: [] }
+            });
+            document.getElementById('displayRoomCode').textContent = roomCode;
+            document.getElementById('hostName').textContent = currentUser.displayName || 'You';
+            showScreen('waitingScreen');
+            listenRoom();
+        });
+
+        document.getElementById('joinRoomBtn').addEventListener('click', async function () {
+            if (!currentUser) { showError('Please sign in first.'); return; }
+            var code = document.getElementById('roomCodeInput').value.trim().toUpperCase();
+            if (code.length < 4) { showError('Enter a valid room code.'); return; }
+            var snap = await get(ref(db, 'rooms/' + code));
+            if (!snap.exists()) { showError('Room not found.'); return; }
+            var room = snap.val();
+            if (room.status !== 'waiting') { showError('This game has already started.'); return; }
+            if (room.guest) { showError('Room is full.'); return; }
+            resetState();
+            roomCode = code; isHost = false; myRole = 'guest'; rounds = room.rounds;
+            await update(ref(db, 'rooms/' + roomCode), { guest: { uid: currentUser.uid, name: currentUser.displayName || 'Player 2' }, status: 'ready' });
+            listenRoom();
+        });
+
+        document.getElementById('cancelRoomBtn').addEventListener('click', async function () {
+            if (roomCode) await remove(ref(db, 'rooms/' + roomCode));
+            showScreen('lobbyScreen');
+        });
+
+        function listenRoom() {
+            roomUnsubscribe = onValue(ref(db, 'rooms/' + roomCode), function (snap) {
+                if (!snap.exists()) { showScreen('lobbyScreen'); return; }
+                var room = snap.val();
+
+                if (room.guest) {
+                    document.getElementById('guestName').textContent = room.guest.name;
+                    document.getElementById('guestSlot').classList.add('filled');
+                    document.getElementById('guestSlot').querySelector('.slot-status').textContent = 'Ready';
+                    document.getElementById('guestSlot').querySelector('.slot-status').classList.remove('waiting');
+                }
+
+                if ((room.status === 'ready' || room.status === 'playing') && !window.__gameStarted) {
+                    rounds = room.rounds;
+                    var myName = myRole === 'host' ? room.host.name : (room.guest ? room.guest.name : 'You');
+                    var oppName = myRole === 'host' ? (room.guest ? room.guest.name : 'Opponent') : room.host.name;
+                    document.getElementById('myScoreName').textContent = myName;
+                    document.getElementById('oppScoreName').textContent = oppName;
+                    document.getElementById('myCamName').textContent = myName;
+                    document.getElementById('oppCamName').textContent = oppName;
+                    if (room.status === 'ready') update(ref(db, 'rooms/' + roomCode), { status: 'playing' });
+                    showScreen('gameScreen');
+                    window.__gameStarted = true;
+                    startGame(room);
+                }
+
+                myScore = myRole === 'host' ? (room.scores ? room.scores.host || 0 : 0) : (room.scores ? room.scores.guest || 0 : 0);
+                oppScore = myRole === 'host' ? (room.scores ? room.scores.guest || 0 : 0) : (room.scores ? room.scores.host || 0 : 0);
+                document.getElementById('myScore').textContent = myScore;
+                document.getElementById('oppScore').textContent = oppScore;
+                updateScoreStyles();
+
+                // Handle round result.
+                // roundWinner, roundTarget and roundDisplayNum are all written together in one
+                // atomic update by the winner's game loop — no separate write to coalesce away.
+                // rwKey uses roundDisplayNum (1-5) which is unique per round and stable.
+                var rwKey = room.roundWinner ? (String(room.roundDisplayNum) + ':' + room.roundWinner) : null;
+                if (rwKey && window.__handledRoundKey !== rwKey) {
+                    window.__handledRoundKey = rwKey;
+                    var iAmWinner = room.roundWinner === myRole;
+                    // Show popup for both players — data comes entirely from the snapshot,
+                    // never from local currentRound which may already be stale.
+                    showRoundPopup(iAmWinner, room.roundDisplayNum, room.roundTarget || '');
+                }
+
+                // Countdown synced from Firebase
+                if (room.nextRoundAt && room.nextRoundAt !== scheduledNextRoundAt) {
+                    scheduledNextRoundAt = room.nextRoundAt;
+                    startCountdown(room.nextRoundAt);
+                }
+
+                if (room.status === 'finished' && !window.__gameOver) {
+                    window.__gameOver = true;
+                    window.__gameWinner = room.gameWinner;
+                    if (cdInterval) { clearInterval(cdInterval); cdInterval = null; }
+                    setTimeout(function () { showGameOver(room.gameWinner === myRole); }, 1500);
+                }
+
+                if (window.__gameStarted && room.webrtc) handleSignaling(room.webrtc);
+            });
+        }
+
+        // roundNum and target are passed explicitly — never reads currentRound/rounds[] globally.
+        function showRoundPopup(iWon, roundNum, target) {
+            roundLocked = true; roundActive = false;
+            document.getElementById('roundEmoji').textContent = iWon ? '🎉' : '😤';
+            document.getElementById('roundResultTitle').textContent = iWon ? 'You got it first!' : 'Opponent was faster!';
+            document.getElementById('roundResultSub').textContent = 'Round ' + roundNum + ' of 5 complete';
+            document.getElementById('myCamPanel').classList.add(iWon ? 'winner' : 'loser');
+            document.getElementById('oppCamPanel').classList.add(iWon ? 'loser' : 'winner');
+            document.getElementById('oppFeedback').textContent = iWon ? '😤 Lost this round' : '🏆 Won this round!';
+
+            var imgSrc = getSignImageUrl(target);
+            var imgBox = document.getElementById('signImageBox');
+            if (imgSrc) { imgBox.style.display = 'block'; document.getElementById('signImage').src = imgSrc; document.getElementById('signImageLabel').textContent = target; }
+            else { imgBox.style.display = 'none'; }
+
+            document.getElementById('roundResult').classList.add('visible');
+        }
+
+        // Computes the full Firebase update for a round result.
+        // Called by the winner's game loop — ONE atomic write contains everything
+        // both players need (roundWinner, roundTarget, roundDisplayNum, scores,
+        // currentRound, nextRoundAt) so Firebase cannot coalesce away roundWinner.
+        async function commitRoundResult(winnerRole, winTarget, winRound) {
+            var snap = await get(ref(db, 'rooms/' + roomCode));
+            if (!snap.exists()) return;
+            var r = snap.val();
+            var hs = (r.scores ? r.scores.host || 0 : 0) + (winnerRole === 'host' ? 1 : 0);
+            var gs = (r.scores ? r.scores.guest || 0 : 0) + (winnerRole === 'guest' ? 1 : 0);
+            var nextRound = winRound; // winRound is already the 0-based index of the NEXT round
+            var isOver = hs >= 3 || gs >= 3 || nextRound >= TOTAL_ROUNDS;
+            var updateData = {
+                roundWinner: winnerRole,
+                roundTarget: winTarget,
+                roundDisplayNum: winRound, // 1-based display number of the round just completed
+                'scores/host': hs,
+                'scores/guest': gs,
+                currentRound: nextRound,
+                nextRoundAt: isOver ? null : Date.now() + ROUND_DELAY
+            };
+            if (isOver) {
+                updateData.status = 'finished';
+                updateData.gameWinner = hs > gs ? 'host' : (gs > hs ? 'guest' : 'draw');
+            }
+            console.log('Round', winRound, '| host:', hs, 'guest:', gs, '| isOver:', isOver);
+            await update(ref(db, 'rooms/' + roomCode), updateData);
+        }
+
+        function startCountdown(nextRoundAt) {
+            if (cdInterval) { clearInterval(cdInterval); cdInterval = null; }
+            var circle = document.getElementById('cdCircle');
+            var numEl = document.getElementById('cdNum');
+            circle.style.transition = 'none';
+            circle.style.strokeDashoffset = '0';
+            numEl.textContent = '5';
+            circle.getBoundingClientRect();
+            circle.style.transition = '';
+
+            function tick() {
+                var remaining = Math.max(0, nextRoundAt - Date.now());
+                numEl.textContent = Math.ceil(remaining / 1000);
+                circle.style.strokeDashoffset = CIRCUMFERENCE * (1 - remaining / ROUND_DELAY);
+                if (remaining <= 0) { clearInterval(cdInterval); cdInterval = null; advanceRound(); }
+            }
+            tick();
+            cdInterval = setInterval(tick, 100);
+        }
+
+        function advanceRound() {
+            document.getElementById('roundResult').classList.remove('visible');
+            document.getElementById('signImageBox').style.display = 'none';
+            get(ref(db, 'rooms/' + roomCode)).then(function (snap) {
+                if (!snap.exists()) return;
+                var r = snap.val();
+                currentRound = r.currentRound || 0;
+                myScore = myRole === 'host' ? (r.scores ? r.scores.host || 0 : 0) : (r.scores ? r.scores.guest || 0 : 0);
+                oppScore = myRole === 'host' ? (r.scores ? r.scores.guest || 0 : 0) : (r.scores ? r.scores.host || 0 : 0);
+                document.getElementById('myScore').textContent = myScore;
+                document.getElementById('oppScore').textContent = oppScore;
+                updateScoreStyles();
+                if (currentRound < TOTAL_ROUNDS && myScore < 3 && oppScore < 3) startRound();
+            });
+        }
+
+        // ── WebRTC ────────────────────────────────────────────────
+        async function handleSignaling(webrtc) {
+            if (!peerConnection || !webrtcReady) return;
+            if (!isHost && webrtc.offer && !window.__answerSent) {
+                window.__answerSent = true;
+                try {
+                    await peerConnection.setRemoteDescription(new RTCSessionDescription(webrtc.offer));
+                    var ans = await peerConnection.createAnswer();
+                    await peerConnection.setLocalDescription(ans);
+                    await update(ref(db, 'rooms/' + roomCode + '/webrtc'), { answer: { type: ans.type, sdp: ans.sdp } });
+                    flushIce(webrtc);
+                } catch (e) { console.error('guest answer err:', e); window.__answerSent = false; }
+                return;
+            }
+            if (isHost && webrtc.answer && !window.__answerReceived) {
+                if (peerConnection.signalingState === 'have-local-offer') {
+                    window.__answerReceived = true;
+                    try { await peerConnection.setRemoteDescription(new RTCSessionDescription(webrtc.answer)); flushIce(webrtc); }
+                    catch (e) { console.error('host answer err:', e); window.__answerReceived = false; }
+                }
+                return;
+            }
+            if (peerConnection.remoteDescription) flushIce(webrtc);
+        }
+
+        function flushIce(webrtc) {
+            var cands = isHost ? webrtc.guestCandidates : webrtc.hostCandidates;
+            if (!cands || !peerConnection || !peerConnection.remoteDescription) return;
+            if (!window.__addedCandidates) window.__addedCandidates = new Set();
+            Object.values(cands).forEach(async function (c) {
+                if (!window.__addedCandidates.has(c.candidate)) {
+                    window.__addedCandidates.add(c.candidate);
+                    try { await peerConnection.addIceCandidate(new RTCIceCandidate(c)); }
+                    catch (e) { console.error('ICE fail:', e); }
+                }
+            });
+        }
+
+        async function setupWebRTC(stream) {
+            peerConnection = new RTCPeerConnection(ICE);
+            localStream = stream;
+            stream.getTracks().forEach(function (t) { peerConnection.addTrack(t, stream); });
+            peerConnection.ontrack = function (ev) {
+                var ov = document.getElementById('oppVideo');
+                var ph = document.getElementById('oppPlaceholder');
+                var rs = (ev.streams && ev.streams[0]) ? ev.streams[0] : new MediaStream([ev.track]);
+                ov.srcObject = rs; ov.style.display = 'block'; ov.style.position = 'absolute'; ov.style.top = '0'; ov.style.left = '0'; ov.style.zIndex = '5';
+                ph.style.display = 'none';
+                document.getElementById('oppCamStatus').innerHTML = '<i class="bi bi-camera-video"></i> Live';
+                document.getElementById('oppCamStatus').className = 'cam-status matched';
+                ov.play().catch(function () { });
+            };
+            var myKey = isHost ? 'hostCandidates' : 'guestCandidates';
+            peerConnection.onicecandidate = async function (ev) {
+                if (ev.candidate) await push(ref(db, 'rooms/' + roomCode + '/webrtc/' + myKey), { candidate: ev.candidate.candidate, sdpMLineIndex: ev.candidate.sdpMLineIndex, sdpMid: ev.candidate.sdpMid });
+            };
+            peerConnection.onconnectionstatechange = function () {
+                var s = peerConnection.connectionState;
+                if (s === 'connected') { document.getElementById('oppCamStatus').innerHTML = '<i class="bi bi-camera-video"></i> Live'; document.getElementById('oppCamStatus').className = 'cam-status matched'; }
+                else if (s === 'failed' || s === 'disconnected') { document.getElementById('oppVideo').style.display = 'none'; document.getElementById('oppPlaceholder').style.display = 'flex'; }
+            };
+            if (isHost) {
+                try {
+                    var offer = await peerConnection.createOffer();
+                    await peerConnection.setLocalDescription(offer);
+                    webrtcReady = true;
+                    await update(ref(db, 'rooms/' + roomCode + '/webrtc'), { offer: { type: offer.type, sdp: offer.sdp } });
+                } catch (e) { console.error('offer err:', e); }
+            } else { webrtcReady = true; }
+        }
+
+        function startGame(room) { currentRound = room.currentRound || 0; startRound(); startCamera(); }
+
+        function startRound() {
+            roundLocked = false; roundActive = true;
+            window.__localRoundHandled = false;
+            window.__handledRoundKey = null;
+            scheduledNextRoundAt = null; // reset so next round's nextRoundAt is always accepted
+            var r = rounds[currentRound];
+            document.getElementById('roundNum').textContent = currentRound + 1;
+            document.getElementById('targetDisplay').textContent = r.target;
+            document.getElementById('targetTypeBadge').textContent = r.type === 'word' ? 'Word' : 'Letter';
+            document.getElementById('targetTypeBadge').className = 'type-badge badge-' + r.type;
+            document.getElementById('myCamPanel').classList.remove('winner', 'loser');
+            document.getElementById('oppCamPanel').classList.remove('winner', 'loser');
+            document.getElementById('myCamStatus').textContent = 'Scanning...';
+            document.getElementById('myCamStatus').className = 'cam-status detecting';
+            document.getElementById('myFeedback').textContent = 'Show your hand to the camera';
+            document.getElementById('oppFeedback').textContent = 'Waiting for result...';
+            window.__matchFrames = 0;
+            window.__wordStartTime = Date.now();
+        }
+
+        async function showGameOver(iWon) {
+            if (cdInterval) { clearInterval(cdInterval); cdInterval = null; }
+            var isDraw = !iWon && window.__gameWinner === 'draw';
+            document.getElementById('gameOverEmoji').textContent = isDraw ? '🤝' : (iWon ? '🏆' : '😔');
+            document.getElementById('gameOverTitle').textContent = isDraw ? "It's a Draw!" : (iWon ? 'You Win!' : 'You Lost');
+            document.getElementById('gameOverSub').textContent = isDraw ? 'Perfectly matched! No XP change.' : (iWon ? 'Incredible signing! +200 XP earned.' : 'Close game! Practice more and challenge again.');
+            if (currentUser && !isDraw) {
+                try { await updateDoc(doc(fs, 'users', currentUser.uid), { total_xp: increment(iWon ? 200 : -50) }); }
+                catch (e) { console.error('XP fail:', e); }
+            }
+            if (iWon) document.getElementById('xpEarnedDisplay').style.display = 'inline-block';
+            document.getElementById('roundResult').classList.remove('visible');
+            document.getElementById('gameOver').classList.add('visible');
+            if (typeof confetti === 'function' && iWon) confetti({ particleCount: 150, spread: 80, origin: { y: 0.5 } });
+            if (peerConnection) { peerConnection.close(); peerConnection = null; }
+        }
+
+        window.__matchFrames = 0; window.__wordStartTime = Date.now();
+        var MATCH_NEEDED = 15, MIN_TIME = 2000;
+
+        async function startCamera() {
+            if (window.__cameraStarted) return;
+            window.__cameraStarted = true;
+            try {
+                var stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: 640, height: 480 }, audio: false });
+                localStream = stream;
+                var video = document.getElementById('myVideo');
+                var canvas = document.getElementById('myCanvas');
+                video.srcObject = stream;
+                video.addEventListener('loadeddata', function () {
+                    canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+                    loadDetection(video, canvas);
+                });
+                await setupWebRTC(stream);
+            } catch (e) { document.getElementById('myFeedback').textContent = 'Camera access denied'; console.error(e); }
+        }
+
+        async function loadDetection(video, canvas) {
+            function loadScript(src) {
+                return new Promise(function (res, rej) {
+                    if (document.querySelector('script[src="' + src + '"]')) { res(); return; }
+                    var s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s);
+                });
+            }
+            await loadScript('https://unpkg.com/@tensorflow/tfjs-core@3.7.0/dist/tf-core.js');
+            await loadScript('https://unpkg.com/@tensorflow/tfjs-converter@3.7.0/dist/tf-converter.js');
+            await loadScript('https://unpkg.com/@tensorflow/tfjs-backend-webgl@3.7.0/dist/tf-backend-webgl.js');
+            await loadScript('https://unpkg.com/@tensorflow-models/handpose@0.0.7/dist/handpose.js');
+            await loadScript('https://cdn.jsdelivr.net/npm/fingerpose@0.1.0/dist/fingerpose.min.js');
+            await loadScript('https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js');
+
+            var model = await handpose.load();
+            var estimator = new fp.GestureEstimator(buildGestures());
+            var ctx = canvas.getContext('2d');
+
+            async function loop() {
+                if (!roundActive) { requestAnimationFrame(loop); return; }
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                var preds = await model.estimateHands(video);
+                var timeReady = (Date.now() - window.__wordStartTime) >= MIN_TIME;
+
+                if (preds.length > 0) {
+                    var est = estimator.estimate(preds[0].landmarks, 4.0);
+                    if (est.gestures.length > 0) {
+                        var best = est.gestures.slice().sort(function (a, b) { return b.score - a.score; })[0];
+                        var pct = Math.min(100, Math.round((best.score / 8.0) * 100));
+                        var target = rounds[currentRound] ? rounds[currentRound].target : '';
+                        var isMatch = best.name === target;
+
+                        document.getElementById('myCamStatus').textContent = isMatch ? 'Matched!' : 'Scanning...';
+                        document.getElementById('myCamStatus').className = 'cam-status ' + (isMatch ? 'matched' : 'detecting');
+
+                        if (pct >= 80) document.getElementById('myFeedback').textContent = 'Looking great!';
+                        else if (pct >= 60) document.getElementById('myFeedback').textContent = 'Almost there!';
+                        else if (pct >= 40) document.getElementById('myFeedback').textContent = 'Getting closer...';
+                        else document.getElementById('myFeedback').textContent = 'Try adjusting your hand';
+
+                        if (isMatch && timeReady) {
+                            window.__matchFrames++;
+                            if (window.__matchFrames >= MATCH_NEEDED && !roundLocked) {
+                                // Lock immediately (sync) so no second frame fires
+                                roundLocked = true;
+                                roundActive = false;
+                                // Capture round info now — currentRound will be mutated by advanceRound later
+                                var winRound = currentRound + 1;   // 1-based display number
+                                var winTarget = rounds[currentRound] ? rounds[currentRound].target : '';
+                                // Single atomic Firebase write: scores + roundWinner + roundTarget + nextRoundAt
+                                // all in one update. This is the ONLY write — no second write clears roundWinner.
+                                // listenRoom on BOTH clients drives the popup from this single event.
+                                await commitRoundResult(myRole, winTarget, winRound);
+                            }
+                        } else if (!isMatch) {
+                            window.__matchFrames = Math.max(0, window.__matchFrames - 1);
+                        }
+                    } else {
+                        document.getElementById('myCamStatus').textContent = 'Hand detected...';
+                        document.getElementById('myCamStatus').className = 'cam-status detecting';
+                        document.getElementById('myFeedback').textContent = 'Hand detected, keep signing...';
+                    }
+                } else {
+                    document.getElementById('myCamStatus').textContent = 'Scanning...';
+                    document.getElementById('myCamStatus').className = 'cam-status';
+                    document.getElementById('myFeedback').textContent = 'Show your hand to the camera';
+                    window.__matchFrames = 0;
+                }
+                requestAnimationFrame(loop);
+            }
+            loop();
+        }
+
+        function getSignImageUrl(target) {
+            var li = {};
+            'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(function (l) { li[l] = 'https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/' + l.toLowerCase() + '.gif'; });
+            var wi = { 'Hello': 'images/hello.png', 'Thank You': 'images/thankyou.png', 'I Love You': 'images/iloveyou.png', 'Yes': 'images/yes.png', 'No': 'images/no.png' };
+            return wi[target] || li[target] || null;
+        }
+
+        function buildGestures() {
+            var g = [];
+            var hG = new fp.GestureDescription('Thank You');
+            [fp.Finger.Thumb, fp.Finger.Index, fp.Finger.Middle, fp.Finger.Ring, fp.Finger.Pinky].forEach(function (f) { hG.addCurl(f, fp.FingerCurl.NoCurl, 1.0); });
+            hG.addDirection(fp.Finger.Index, fp.FingerDirection.VerticalUp, 1.0); hG.addDirection(fp.Finger.Middle, fp.FingerDirection.VerticalUp, 1.0); hG.addDirection(fp.Finger.Ring, fp.FingerDirection.VerticalUp, 1.0); hG.addDirection(fp.Finger.Pinky, fp.FingerDirection.VerticalUp, 1.0);
+            g.push(hG);
+            var tG = new fp.GestureDescription('Hello');
+            [fp.Finger.Thumb, fp.Finger.Index, fp.Finger.Middle, fp.Finger.Ring, fp.Finger.Pinky].forEach(function (f) { tG.addCurl(f, fp.FingerCurl.NoCurl, 1.0); });
+            tG.addDirection(fp.Finger.Index, fp.FingerDirection.DiagonalUpLeft, 1.0); tG.addDirection(fp.Finger.Index, fp.FingerDirection.DiagonalUpRight, 1.0); tG.addDirection(fp.Finger.Middle, fp.FingerDirection.DiagonalUpLeft, 1.0); tG.addDirection(fp.Finger.Middle, fp.FingerDirection.DiagonalUpRight, 1.0);
+            g.push(tG);
+            var ily = new fp.GestureDescription('I Love You');
+            ily.addCurl(fp.Finger.Thumb, fp.FingerCurl.NoCurl, 1.0); ily.addCurl(fp.Finger.Index, fp.FingerCurl.NoCurl, 1.0); ily.addCurl(fp.Finger.Middle, fp.FingerCurl.FullCurl, 1.0); ily.addCurl(fp.Finger.Ring, fp.FingerCurl.FullCurl, 1.0); ily.addCurl(fp.Finger.Pinky, fp.FingerCurl.NoCurl, 1.0);
+            ily.addDirection(fp.Finger.Index, fp.FingerDirection.VerticalUp, 1.0); ily.addDirection(fp.Finger.Pinky, fp.FingerDirection.VerticalUp, 1.0);
+            g.push(ily);
+            var yes = new fp.GestureDescription('Yes');
+            yes.addCurl(fp.Finger.Thumb, fp.FingerCurl.NoCurl, 1.0);[fp.Finger.Index, fp.Finger.Middle, fp.Finger.Ring, fp.Finger.Pinky].forEach(function (f) { yes.addCurl(f, fp.FingerCurl.FullCurl, 1.0); }); yes.addDirection(fp.Finger.Thumb, fp.FingerDirection.VerticalUp, 1.0);
+            g.push(yes);
+            var no = new fp.GestureDescription('No');
+            no.addCurl(fp.Finger.Thumb, fp.FingerCurl.FullCurl, 1.0); no.addCurl(fp.Finger.Index, fp.FingerCurl.NoCurl, 1.0); no.addCurl(fp.Finger.Middle, fp.FingerCurl.NoCurl, 1.0);[fp.Finger.Ring, fp.Finger.Pinky].forEach(function (f) { no.addCurl(f, fp.FingerCurl.FullCurl, 1.0); }); no.addDirection(fp.Finger.Index, fp.FingerDirection.VerticalUp, 1.0); no.addDirection(fp.Finger.Middle, fp.FingerDirection.VerticalUp, 1.0);
+            g.push(no);
+            var defs = {
+                'A': function (d) { [fp.Finger.Index, fp.Finger.Middle, fp.Finger.Ring, fp.Finger.Pinky].forEach(function (f) { d.addCurl(f, fp.FingerCurl.FullCurl, 1.0); }); d.addCurl(fp.Finger.Thumb, fp.FingerCurl.NoCurl, 0.8); },
+                'B': function (d) { [fp.Finger.Index, fp.Finger.Middle, fp.Finger.Ring, fp.Finger.Pinky].forEach(function (f) { d.addCurl(f, fp.FingerCurl.NoCurl, 1.0); d.addDirection(f, fp.FingerDirection.VerticalUp, 1.0); }); d.addCurl(fp.Finger.Thumb, fp.FingerCurl.FullCurl, 1.0); },
+                'C': function (d) { [fp.Finger.Index, fp.Finger.Middle, fp.Finger.Ring, fp.Finger.Pinky, fp.Finger.Thumb].forEach(function (f) { d.addCurl(f, fp.FingerCurl.HalfCurl, 0.9); }); },
+                'D': function (d) { d.addCurl(fp.Finger.Index, fp.FingerCurl.NoCurl, 1.0); d.addDirection(fp.Finger.Index, fp.FingerDirection.VerticalUp, 1.0);[fp.Finger.Middle, fp.Finger.Ring, fp.Finger.Pinky].forEach(function (f) { d.addCurl(f, fp.FingerCurl.FullCurl, 1.0); }); d.addCurl(fp.Finger.Thumb, fp.FingerCurl.HalfCurl, 0.8); },
+                'E': function (d) { [fp.Finger.Index, fp.Finger.Middle, fp.Finger.Ring, fp.Finger.Pinky].forEach(function (f) { d.addCurl(f, fp.FingerCurl.HalfCurl, 1.0); }); d.addCurl(fp.Finger.Thumb, fp.FingerCurl.FullCurl, 1.0); },
+                'F': function (d) { d.addCurl(fp.Finger.Index, fp.FingerCurl.HalfCurl, 1.0);[fp.Finger.Middle, fp.Finger.Ring, fp.Finger.Pinky].forEach(function (f) { d.addCurl(f, fp.FingerCurl.NoCurl, 1.0); d.addDirection(f, fp.FingerDirection.VerticalUp, 0.9); }); },
+                'G': function (d) { d.addCurl(fp.Finger.Index, fp.FingerCurl.NoCurl, 1.0); d.addDirection(fp.Finger.Index, fp.FingerDirection.HorizontalLeft, 1.0);[fp.Finger.Middle, fp.Finger.Ring, fp.Finger.Pinky].forEach(function (f) { d.addCurl(f, fp.FingerCurl.FullCurl, 1.0); }); },
+                'H': function (d) { [fp.Finger.Index, fp.Finger.Middle].forEach(function (f) { d.addCurl(f, fp.FingerCurl.NoCurl, 1.0); d.addDirection(f, fp.FingerDirection.HorizontalLeft, 0.9); });[fp.Finger.Ring, fp.Finger.Pinky].forEach(function (f) { d.addCurl(f, fp.FingerCurl.FullCurl, 1.0); }); },
+                'I': function (d) { d.addCurl(fp.Finger.Pinky, fp.FingerCurl.NoCurl, 1.0); d.addDirection(fp.Finger.Pinky, fp.FingerDirection.VerticalUp, 1.0);[fp.Finger.Index, fp.Finger.Middle, fp.Finger.Ring].forEach(function (f) { d.addCurl(f, fp.FingerCurl.FullCurl, 1.0); }); },
+                'L': function (d) { d.addCurl(fp.Finger.Index, fp.FingerCurl.NoCurl, 1.0); d.addDirection(fp.Finger.Index, fp.FingerDirection.VerticalUp, 1.0); d.addCurl(fp.Finger.Thumb, fp.FingerCurl.NoCurl, 1.0); d.addDirection(fp.Finger.Thumb, fp.FingerDirection.HorizontalLeft, 0.9);[fp.Finger.Middle, fp.Finger.Ring, fp.Finger.Pinky].forEach(function (f) { d.addCurl(f, fp.FingerCurl.FullCurl, 1.0); }); },
+                'O': function (d) { [fp.Finger.Index, fp.Finger.Middle, fp.Finger.Ring, fp.Finger.Pinky, fp.Finger.Thumb].forEach(function (f) { d.addCurl(f, fp.FingerCurl.HalfCurl, 0.9); }); },
+                'V': function (d) { [fp.Finger.Index, fp.Finger.Middle].forEach(function (f) { d.addCurl(f, fp.FingerCurl.NoCurl, 1.0); d.addDirection(f, fp.FingerDirection.VerticalUp, 1.0); });[fp.Finger.Ring, fp.Finger.Pinky].forEach(function (f) { d.addCurl(f, fp.FingerCurl.FullCurl, 1.0); }); },
+                'W': function (d) { [fp.Finger.Index, fp.Finger.Middle, fp.Finger.Ring].forEach(function (f) { d.addCurl(f, fp.FingerCurl.NoCurl, 1.0); d.addDirection(f, fp.FingerDirection.VerticalUp, 1.0); }); d.addCurl(fp.Finger.Pinky, fp.FingerCurl.FullCurl, 1.0); },
+                'Y': function (d) { d.addCurl(fp.Finger.Thumb, fp.FingerCurl.NoCurl, 1.0); d.addCurl(fp.Finger.Pinky, fp.FingerCurl.NoCurl, 1.0);[fp.Finger.Index, fp.Finger.Middle, fp.Finger.Ring].forEach(function (f) { d.addCurl(f, fp.FingerCurl.FullCurl, 1.0); }); }
+            };
+            Object.keys(defs).forEach(function (name) { var d = new fp.GestureDescription(name); defs[name](d); g.push(d); });
+            return g;
+        }
+    </script>
+    <script type="module" src="js/firebase-auth.js"></script>
+</body>
+
+
+<footer class="site-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-12">
+          <div class="copyright-text-wrap">
+            <p class="mb-0">
+              <span class="copyright-text">Copyright © 2026 <a href="#">Signify</a>. All rights reserved.</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</html>

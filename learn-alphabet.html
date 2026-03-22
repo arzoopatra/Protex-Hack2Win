@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Signify – Learn Alphabet</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/bootstrap-icons.css" rel="stylesheet">
+  <link href="css/templatemo-first-portfolio-style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary:   #6d8bfa;
+      --primary-d: #5371e0;
+      --text:      #0f172a;
+      --muted:     #64748b;
+      --bg:        #f8fafc;
+      --surface:   #ffffff;
+      --border:    #e2e8f0;
+      --success:   #22c55e;
+      --success-bg:#f0fdf4;
+      --warn:      #f59e0b;
+    }
+    * { box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; margin: 0; }
+
+    /* ── Navbar — solid, sticky, matches profile.html ── */
+    .navbar { background: #fff !important; border-bottom: 2px solid var(--border); box-shadow: 0 2px 12px rgba(15,23,42,0.06); }
+    .navbar-brand { color: var(--primary) !important; font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 1.8rem; }
+    .back-link { color: var(--muted); font-size: 14px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 5px; padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border); transition: all 0.15s; }
+    .back-link:hover { color: var(--primary); border-color: var(--primary); background: #eff3ff; }
+
+    .learn-layout { display: grid; grid-template-columns: 280px 1fr; min-height: calc(100vh - 61px); }
+
+    /* Sidebar */
+    .sidebar { background: var(--surface); border-right: 1px solid var(--border); padding: 24px 18px; overflow-y: auto; max-height: calc(100vh - 61px); position: sticky; top: 61px; }
+    .sidebar-label { font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+    .mini-stat { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 10px; text-align: center; }
+    .mini-stat .val { font-size: 1.1rem; font-weight: 900; color: var(--primary); display: block; }
+    .mini-stat .lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* Letter grid */
+    .letter-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+    .letter-btn { aspect-ratio:1; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; border-radius:8px; border:1px solid var(--border); background:var(--bg); color:var(--muted); cursor:pointer; transition:all 0.15s; position:relative; }
+    .letter-btn:hover { border-color:var(--primary); color:var(--primary); background:#eff3ff; }
+    .letter-btn.active { background:var(--primary); border-color:var(--primary); color:#fff; }
+    .letter-btn.done { background:var(--success-bg); border-color:#86efac; color:#16a34a; }
+    .letter-btn.done::after { content:'✓'; position:absolute; top:1px; right:3px; font-size:8px; color:#16a34a; }
+    
+    /* Main */
+    .main-content { padding: 28px 32px; }
+    .overall-progress { margin-bottom: 24px; }
+    .progress-header { display:flex; justify-content:space-between; margin-bottom:6px; font-size:13px; color:var(--muted); }
+    .progress-header strong { color: var(--primary); }
+    .prog-track { height:8px; background:var(--border); border-radius:10px; overflow:hidden; }
+    .prog-fill { height:100%; border-radius:10px; background:linear-gradient(90deg,var(--primary),var(--primary-d)); transition:width 0.5s ease; }
+
+    /* Letter hero */
+    .letter-hero-card { background:var(--surface); border:2px solid var(--border); border-radius:20px; padding:28px; margin-bottom:24px; display:grid; grid-template-columns:140px 1fr; gap:28px; align-items:center; }
+    .asl-image-box { background:var(--bg); border:2px solid var(--border); border-radius:14px; overflow:hidden; aspect-ratio:1; display:flex; align-items:center; justify-content:center; position:relative; }
+    .asl-image-box img { width:100%; height:100%; object-fit:contain; padding:6px; }
+    .asl-image-box .img-label { position:absolute; bottom:4px; left:0; right:0; text-align:center; font-size:9px; color:var(--muted); }
+    .letter-info h2 { font-size:1.8rem; font-weight:900; color:var(--text); margin-bottom:6px; letter-spacing:-0.5px; }
+    .letter-info h2 .letter-highlight { color: var(--primary); }
+    .letter-info .desc { color:var(--muted); line-height:1.6; margin-bottom:12px; }
+    .tip-chip { display:inline-flex; align-items:center; gap:6px; background:#fffbeb; border:1px solid #fde68a; border-radius:8px; padding:6px 12px; font-size:12px; color:#92400e; }
+
+    /* Camera + panel */
+    .content-grid { display:grid; grid-template-columns:1fr 300px; gap:20px; align-items:start; }
+    .video-wrapper { position:relative; border-radius:16px; overflow:hidden; border:2px solid var(--border); background:#000; aspect-ratio:4/3; }
+    .video-wrapper video, .video-wrapper canvas { width:100%; height:100%; object-fit:cover; display:block; transform:scaleX(-1); }
+    .video-wrapper canvas { position:absolute; top:0; left:0; z-index:10; pointer-events:none; }
+    .cam-overlay { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:20; background:rgba(15,23,42,0.6); backdrop-filter:blur(3px); }
+    .cam-overlay i { font-size:3rem; color:var(--primary); margin-bottom:12px; }
+    .cam-overlay p { color:#cbd5e1; text-align:center; max-width:200px; font-size:14px; margin:0; }
+
+    .right-panel { display:flex; flex-direction:column; gap:14px; }
+    .panel-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px; }
+    .panel-card h5 { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:14px; }
+    .hold-track { height:36px; background:var(--bg); border-radius:10px; overflow:hidden; border:1px solid var(--border); position:relative; margin-bottom:10px; }
+    .hold-fill { height:100%; border-radius:9px; background:linear-gradient(90deg,var(--primary),var(--primary-d)); transition:width 0.08s linear; }
+    .hold-fill.success { background:linear-gradient(90deg,#22c55e,#16a34a); }
+    .hold-label { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:var(--text); pointer-events:none; }
+    .detect-row { display:flex; justify-content:space-between; font-size:12px; color:var(--muted); }
+    .detect-row strong { color:var(--text); }
+
+    .cam-btn { width:100%; padding:12px; border-radius:10px; border:none; background:var(--primary); color:#fff; font-weight:700; font-size:14px; cursor:pointer; transition:background 0.2s; display:flex; align-items:center; justify-content:center; gap:8px; }
+    .cam-btn:hover { background:var(--primary-d); }
+    .cam-btn:disabled { background:var(--border); color:var(--muted); cursor:not-allowed; }
+
+    .nav-btns { display:flex; gap:8px; }
+    .nav-btn { flex:1; padding:9px; border-radius:10px; border:1px solid var(--border); background:transparent; color:var(--muted); cursor:pointer; font-weight:600; font-size:13px; transition:all 0.15s; }
+    .nav-btn:hover { border-color:var(--primary); color:var(--primary); background:#eff3ff; }
+
+    /* ── Success overlay ── */
+    .success-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,0.5); backdrop-filter:blur(6px); z-index:999; justify-content:center; align-items:center; }
+    .success-overlay.visible { display:flex; }
+    .success-card { background:var(--surface); border:2px solid #86efac; border-radius:24px; padding:40px 48px; text-align:center; max-width:420px; width:90%; box-shadow:0 20px 60px rgba(34,197,94,0.15); animation:popIn 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+    @keyframes popIn { from{transform:scale(0.8);opacity:0} to{transform:scale(1);opacity:1} }
+    .success-card .s-emoji { font-size:4rem; display:block; margin-bottom:12px; }
+    .success-card h3 { font-size:1.8rem; font-weight:900; color:var(--text); margin-bottom:8px; }
+    .success-card .xp-tag { display:inline-block; background:#fffbeb; border:1px solid #fde68a; border-radius:8px; padding:6px 16px; font-size:1.3rem; font-weight:900; color:#92400e; margin-bottom:14px; }
+    .success-card p { color:var(--muted); margin-bottom:20px; }
+    .next-btn { background:var(--success); border:none; color:#fff; font-weight:700; font-size:16px; padding:13px 32px; border-radius:12px; cursor:pointer; width:100%; margin-bottom:10px; }
+    .next-btn:hover { opacity:0.85; }
+    .practice-btn { background:transparent; border:1px solid var(--border); color:var(--muted); font-weight:600; font-size:14px; padding:10px 24px; border-radius:12px; cursor:pointer; width:100%; transition:all 0.15s; }
+    .practice-btn:hover { border-color:var(--primary); color:var(--primary); background:#eff3ff; }
+
+    /* ── Retry overlay ── */
+    .retry-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,0.5); backdrop-filter:blur(6px); z-index:999; justify-content:center; align-items:center; }
+    .retry-overlay.visible { display:flex; }
+    .retry-card { background:var(--surface); border:2px solid #fde68a; border-radius:24px; padding:40px 48px; text-align:center; max-width:420px; width:90%; box-shadow:0 20px 60px rgba(245,158,11,0.15); animation:popIn 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+    .retry-card .r-emoji { font-size:4rem; display:block; margin-bottom:12px; }
+    .retry-card h3 { font-size:1.8rem; font-weight:900; color:var(--text); margin-bottom:8px; }
+    .retry-card p { color:var(--muted); margin-bottom:24px; line-height:1.6; }
+    .retry-btn { background:var(--primary); border:none; color:#fff; font-weight:700; font-size:16px; padding:13px 32px; border-radius:12px; cursor:pointer; width:100%; margin-bottom:10px; }
+    .retry-btn:hover { background:var(--primary-d); }
+    .skip-btn { background:transparent; border:1px solid #fde68a; color:#92400e; font-weight:600; font-size:14px; padding:10px 24px; border-radius:12px; cursor:pointer; width:100%; transition:all 0.15s; }
+    .skip-btn:hover { background:#fffbeb; }
+
+    /* XP pop */
+    @keyframes xpPop { 0%{transform:translateX(-50%) translateY(0) scale(1);opacity:1} 100%{transform:translateX(-50%) translateY(-70px) scale(1.5);opacity:0} }
+
+    @media (max-width:1100px) { .content-grid { grid-template-columns:1fr; } }
+    @media (max-width:900px) {
+      .learn-layout { grid-template-columns:1fr; }
+      .sidebar { position:static; max-height:none; border-right:none; border-bottom:1px solid var(--border); }
+      .letter-hero-card { grid-template-columns:100px 1fr; gap:16px; }
+    }
+    @media (max-width:576px) { .letter-hero-card { grid-template-columns:1fr; } .main-content { padding:20px 16px; } }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container-fluid px-4" style="gap:16px; min-height:60px;">
+      <a href="index.html" class="navbar-brand" style="margin-right:0;">Signify</a>
+      <a href="learn.html" class="back-link ms-2"><i class="bi bi-arrow-left"></i> Modules</a>
+      <div class="ms-auto d-none d-lg-flex align-items-center">
+        <i class="bi bi-person-circle profile-icon-btn" style="cursor:pointer;font-size:22px;color:var(--muted);"></i>
+      </div>
+    </div>
+  </nav>
+
+  <div class="learn-layout">
+    <aside class="sidebar">
+      <div class="sidebar-label">Session Stats</div>
+      <div class="stats-grid">
+        <div class="mini-stat"><span class="val" id="sb-xp">0</span><span class="lbl">XP Earned</span></div>
+        <div class="mini-stat"><span class="val" id="sb-done">0/26</span><span class="lbl">Letters</span></div>
+      </div>
+      <div class="sidebar-label" style="margin-top:8px;">All Letters</div>
+      <div class="letter-grid" id="letterGrid"></div>
+
+      <!-- Legend -->
+      <div style="margin-top:16px;font-size:11px;color:var(--muted);line-height:2;">
+        <span style="display:inline-flex;align-items:center;gap:4px;margin-right:10px;">
+          <span style="width:10px;height:10px;border-radius:3px;background:#22c55e;flex-shrink:0;"></span> Done
+        </span>
+        <span style="display:inline-flex;align-items:center;gap:4px;">
+        </span>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="overall-progress">
+        <div class="progress-header">
+          <span>Alphabet Progress</span>
+          <strong id="progressCount">0 / 26</strong>
+        </div>
+        <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+      </div>
+
+      <!-- Letter hero card -->
+      <div class="letter-hero-card">
+        <div class="asl-image-box">
+          <img id="aslImage" src="" alt="ASL reference"
+               onerror="this.style.display='none';document.getElementById('aslFallback').style.display='flex'">
+          <div id="aslFallback" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:4rem;font-weight:900;color:var(--primary);"></div>
+          <span class="img-label">Reference sign</span>
+        </div>
+        <div class="letter-info">
+          <h2>Sign the letter <span class="letter-highlight" id="letterHighlight">"A"</span></h2>
+          <p class="desc" id="letterDesc">Loading…</p>
+          <div class="tip-chip" id="letterTip"><i class="bi bi-hand-index-thumb"></i> Loading…</div>
+        </div>
+      </div>
+
+      <!-- Camera + right panel -->
+      <div class="content-grid">
+        <div>
+          <div class="video-wrapper">
+            <video id="webcam" autoplay playsinline muted></video>
+            <!-- Canvas still present but engine draws nothing on it -->
+            <canvas id="output_canvas"></canvas>
+            <div class="cam-overlay" id="camOverlay">
+              <i class="bi bi-webcam"></i>
+              <p>Click "Enable Camera" below to start practising</p>
+            </div>
+          </div>
+          <p class="mt-2 text-center" style="color:var(--muted);font-size:12px;">
+            <i class="bi bi-shield-check"></i> On-device only. No video ever leaves your browser.
+          </p>
+        </div>
+
+        <div class="right-panel">
+          <div class="panel-card">
+            <h5>Hold to Confirm</h5>
+            <div class="hold-track">
+              <div class="hold-fill" id="holdBar" style="width:0%"></div>
+              <div class="hold-label" id="holdLabel">Make the sign!</div>
+            </div>
+          </div>
+
+          <!-- Camera button — triggers browser permission dialog -->
+          <button class="cam-btn" id="camBtn" disabled>
+            <i class="bi bi-hourglass-split"></i> Loading AI…
+          </button>
+
+          <div class="nav-btns">
+            <button class="nav-btn" onclick="goLetter(-1)"><i class="bi bi-chevron-left"></i> Prev</button>
+            <button class="nav-btn" onclick="goLetter(1)">Next <i class="bi bi-chevron-right"></i></button>
+          </div>
+
+          <div class="panel-card" style="background:#eff3ff;border-color:#c7d4fd;">
+            <h5 style="color:var(--primary);">Accessibility</h5>
+            <p style="font-size:12px;color:#374151;margin:0;">
+              IBM colorblind-safe palette · Text + icons, not colour alone · Keyboard navigable · On-device processing
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ── Success overlay ── -->
+  <div class="success-overlay" id="successOverlay">
+    <div class="success-card">
+      <span class="s-emoji">🎉</span>
+      <h3 id="successTitle">Letter A Mastered!</h3>
+      <span class="xp-tag" id="xpEarned">+50 XP</span>
+      <p id="successSub">Keep it up!</p>
+      <button class="next-btn" onclick="dismissSuccess()">Next Letter →</button>
+      <button class="practice-btn" onclick="retryForPractice()">
+        <i class="bi bi-arrow-counterclockwise"></i> Retry (Practice Only — no XP)
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Retry / Try Again overlay ── -->
+  <div class="retry-overlay" id="retryOverlay">
+    <div class="retry-card">
+      <span class="r-emoji">🤔</span>
+      <h3 id="retryTitle">Not quite!</h3>
+      <p id="retrySubtitle">Take another look at the reference image on the left and try again. You've got this!</p>
+      <button class="retry-btn" onclick="retryLetter()">
+        <i class="bi bi-arrow-counterclockwise"></i> Try Again
+      </button>
+      <button class="skip-btn" onclick="skipLetter()">
+        ↩ Skip for Now (no XP, come back later)
+      </button>
+    </div>
+  </div>
+
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/custom.js"></script>
+
+  <!-- Firebase: sets window.SIGNIFY_CONFIG -->
+  <script type="module">
+    import { initializeApp }    from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, updateDoc, increment, serverTimestamp }
+      from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+    apiKey: "AIzaSyAtvEg9LMPYz_ksNsPkWXjSof85XD0BhWc",
+    authDomain: "signify-0326.firebaseapp.com",
+    projectId: "signify-0326",
+    storageBucket: "signify-0326.firebasestorage.app",
+    messagingSenderId: "277885993716",
+    appId: "1:277885993716:web:8aa7aef7777f14417e14a1",
+    databaseURL: "https://signify-0326-default-rtdb.asia-southeast1.firebasedatabase.app/"
+  };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db   = getFirestore(app);
+    let currentUser  = null;
+    let sessionStart = Date.now();
+
+    window.SIGNIFY_CONFIG = {
+      completedSet: new Set(),
+      streak: 0,
+      onSuccess: async (letter, sessionXP) => {
+        if (!currentUser) return;
+        const uid  = currentUser.uid;
+        const secs = Math.round((Date.now() - sessionStart) / 1000);
+        const done = window.SIGNIFY_CONFIG.completedSet;
+        const AtoM = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'].filter(l => done.has(l)).length;
+        const alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const nextLetter = alpha[Math.min(alpha.indexOf(letter) + 1, 25)];
+        await updateDoc(doc(db, "users", currentUser.uid), {
+          total_xp: increment(50),
+          total_challenges_completed : increment(1),
+          total_time_spent: increment(secs),
+          [`alphabet.${letter}`]: true,
+          nextLetter,
+          lastSeen: serverTimestamp()
+        });
+        sessionStart = Date.now();
+      }
+    };
+
+    onAuthStateChanged(auth, async user => {
+      currentUser = user;
+      if (!user) return;
+      const snap = await getDoc(doc(db, "users", user.uid));
+      if (!snap.exists()) return;
+      const data = snap.data();
+      window.SIGNIFY_CONFIG.streak = data.streak || 0;
+      window.SIGNIFY_CONFIG.totalXP = data.total_xp || 0;
+      const xpEl = document.getElementById("sb-xp");
+      if (xpEl) xpEl.textContent = data.total_xp || 0;
+      const alphaMap = data.alphabet || {};
+      Object.keys(alphaMap).forEach(l => { if (alphaMap[l]) window.SIGNIFY_CONFIG.completedSet.add(l); });
+      if (window.__signEngineReady) window.__signEngineRerender();
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/fingerpose@0.1.0/dist/fingerpose.min.js"></script>
+  <script type="module" src="js/sign-engine.js"></script>
+  <script type="module" src="js/firebase-auth.js"></script>
+
+</body>
+</html>

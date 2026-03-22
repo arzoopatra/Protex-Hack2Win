@@ -1,0 +1,12 @@
+{
+  "title": "SignLingua — Détection de la main",
+  "instruction": "Autorisez l'accès à la caméra. Montrez votre main.",
+  "status_waiting": "Statut : en attente",
+  "translate_header": "Traduire la phrase",
+  "translate_btn": "Traduire",
+  "translated_label": "Traduit:",
+  "sentence_label": "Phrase:",
+  "clear_btn": "Effacer",
+  "speak_btn": "Parler",
+  "chooseLang": "Choisir la langue:"
+}

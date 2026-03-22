@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Signify – Word Stages</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #6d8bfa;
+            --primary-d: #5371e0;
+            --text: #0f172a;
+            --muted: #64748b;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg) !important;
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        /* Override any green from templatemo stylesheet */
+        section,
+        .hero,
+        main,
+        .container-fluid {
+            background: var(--bg) !important;
+        }
+
+        .navbar {
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .navbar-brand {
+            color: var(--primary) !important;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+
+        .back-link {
+            color: var(--muted);
+            font-size: 14px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+
+        .hero {
+            padding: 60px 0 40px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero p {
+            color: var(--muted);
+            font-size: 1.05rem;
+            max-width: 440px;
+            margin: 0 auto;
+        }
+
+        /* Path line */
+        .stages-path {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 20px 80px;
+            position: relative;
+        }
+
+        .stages-path::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--primary) 0%, #e2e8f0 60%);
+            transform: translateX(-50%);
+            z-index: 0;
+        }
+
+        .stage-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 32px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stage-row:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .stage-node {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+            border: 3px solid var(--border);
+            background: var(--surface);
+            position: relative;
+            z-index: 2;
+        }
+
+        .stage-node.unlocked {
+            border-color: var(--primary);
+            background: #eff3ff;
+        }
+
+        .stage-node.locked {
+            border-color: #cbd5e1;
+            background: #f1f5f9;
+            filter: grayscale(0.5);
+        }
+
+        .stage-card {
+            flex: 1;
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 18px;
+            padding: 22px 24px;
+            text-decoration: none;
+            color: var(--text);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        .stage-card.unlocked:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(109, 139, 250, 0.15);
+            border-color: var(--primary);
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .stage-card.locked {
+            opacity: 0.6;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .stage-num {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        .stage-title {
+            font-size: 1.25rem;
+            font-weight: 900;
+            margin-bottom: 6px;
+            letter-spacing: -0.3px;
+        }
+
+        .stage-desc {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 14px;
+            line-height: 1.5;
+        }
+
+        .word-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 16px;
+        }
+
+        .word-pill {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 6px;
+        }
+
+        .pill-green {
+            background: #f0fdf4;
+            color: #16a34a;
+            border: 1px solid #86efac;
+        }
+
+        .pill-amber {
+            background: #fffbeb;
+            color: #b45309;
+            border: 1px solid #fde68a;
+        }
+
+        .pill-locked {
+            background: #f1f5f9;
+            color: var(--muted);
+            border: 1px solid var(--border);
+        }
+
+        .stage-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stage-meta {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .stage-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 8px 18px;
+            border-radius: 10px;
+            border: none;
+            background: var(--primary);
+            color: #fff;
+            transition: background 0.2s;
+        }
+
+        .stage-cta:hover {
+            background: var(--primary-d);
+        }
+
+        .stage-cta.locked-cta {
+            background: #e2e8f0;
+            color: var(--muted);
+        }
+
+        .locked-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--muted);
+            background: #f1f5f9;
+            border: 1px solid var(--border);
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+
+        /* Coming soon tag */
+        .soon-tag {
+            display: inline-block;
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fde68a;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        @media (max-width: 600px) {
+            .stages-path::before {
+                left: 27px;
+            }
+
+            .stage-row,
+            .stage-row:nth-child(even) {
+                flex-direction: row;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container-fluid px-4" style="gap:16px;">
+            <a href="index.html" class="navbar-brand" style="margin-right:0;">Signify</a>
+            <a href="learn.html" class="back-link"><i class="bi bi-arrow-left"></i> Modules</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Word <span>Stages</span></h1>
+            <p>Work through real ASL vocabulary — one stage at a time. More stages unlock as you progress.</p>
+        </div>
+    </section>
+
+    <div class="stages-path">
+
+        <!-- Stage 1 — Everyday Words (UNLOCKED) -->
+        <div class="stage-row">
+            <div class="stage-node unlocked">👋</div>
+            <a href="learn-word-greetings.html" class="stage-card unlocked">
+                <div class="stage-num">Stage 1</div>
+                <div class="stage-title">Everyday Words</div>
+                <div class="stage-desc">The most common signs you'll use every day — greetings, emotions, and
+                    essentials.</div>
+                <div class="word-pills">
+                    <span class="word-pill pill-green">Hello</span>
+                    <span class="word-pill pill-green">Thank You</span>
+                    <span class="word-pill pill-green">I Love You</span>
+                    <span class="word-pill pill-green">Yes</span>
+                    <span class="word-pill pill-green">No</span>
+                </div>
+                <div class="stage-footer">
+                    <span class="stage-meta">5 words · ~10 min · +100 XP each</span>
+                    <span class="stage-cta">Start <i class="bi bi-arrow-right"></i></span>
+                </div>
+            </a>
+        </div>
+
+        <!-- Stage 2 — Eating & Ordering (LOCKED until stage1_complete) -->
+        <div class="stage-row">
+            <div class="stage-node locked" id="stage2-node">🍽️</div>
+            <div class="stage-card locked" id="stage2-card">
+                <div class="locked-badge" id="stage2-badge"><i class="bi bi-lock-fill"></i> Complete Stage 1 to unlock
+                </div>
+                <div class="stage-num">Stage 2 <span class="soon-tag" id="stage2-soon">Coming Soon</span></div>
+                <div class="stage-title">Eating & Ordering</div>
+                <div class="stage-desc">Order food, ask for help, and navigate everyday situations with confidence.
+                </div>
+                <div class="word-pills">
+                    <span class="word-pill pill-locked">Eat</span>
+                    <span class="word-pill pill-locked">Drink</span>
+                    <span class="word-pill pill-locked">More</span>
+                    <span class="word-pill pill-locked">Finished</span>
+                    <span class="word-pill pill-locked">Help</span>
+                </div>
+                <div class="stage-footer">
+                    <span class="stage-meta">5 words · ~10 min · +150 XP each</span>
+                    <span class="stage-cta locked-cta" id="stage2-cta"><i class="bi bi-lock-fill"></i> Locked</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stage 3 — Feelings (LOCKED) -->
+        <div class="stage-row">
+            <div class="stage-node locked">❤️</div>
+            <div class="stage-card locked">
+                <div class="locked-badge"><i class="bi bi-lock-fill"></i> Complete Stage 2 to unlock</div>
+                <div class="stage-num">Stage 3 <span class="soon-tag">Coming Soon</span></div>
+                <div class="stage-title">Feelings & Emotions</div>
+                <div class="stage-desc">Express how you feel — happy, sad, excited, and more.</div>
+                <div class="word-pills">
+                    <span class="word-pill pill-locked">Happy</span>
+                    <span class="word-pill pill-locked">Sad</span>
+                    <span class="word-pill pill-locked">Excited</span>
+                    <span class="word-pill pill-locked">Angry</span>
+                    <span class="word-pill pill-locked">Tired</span>
+                </div>
+                <div class="stage-footer">
+                    <span class="stage-meta">5 words · ~10 min · +200 XP each</span>
+                    <span class="stage-cta locked-cta"><i class="bi bi-lock-fill"></i> Locked</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grammar Unlock — locked until all stages complete -->
+        <div class="stage-row">
+            <div class="stage-node locked">💬</div>
+            <div class="stage-card locked" style="border-style: dashed;">
+                <div class="locked-badge"><i class="bi bi-lock-fill"></i> Complete all stages to unlock</div>
+                <div class="stage-num">Next Up</div>
+                <div class="stage-title">Putting It All Together</div>
+                <div class="stage-desc">You've already got the words — now let's start combining them into real thoughts
+                    you can sign with confidence. Simple, step-by-step, no grammar textbooks required.</div>
+                <div class="word-pills">
+                    <span class="word-pill pill-locked">Simple phrases</span>
+                    <span class="word-pill pill-locked">Asking questions</span>
+                    <span class="word-pill pill-locked">Sharing feelings</span>
+                    <span class="word-pill pill-locked">Real conversations</span>
+                </div>
+                <div class="stage-footer">
+                    <span class="stage-meta">Unlocks after all word stages</span>
+                    <span class="stage-cta locked-cta"><i class="bi bi-lock-fill"></i> Locked</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Firebase: unlock Stage 2 if stage1_complete -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+    apiKey: "AIzaSyAtvEg9LMPYz_ksNsPkWXjSof85XD0BhWc",
+    authDomain: "signify-0326.firebaseapp.com",
+    projectId: "signify-0326",
+    storageBucket: "signify-0326.firebasestorage.app",
+    messagingSenderId: "277885993716",
+    appId: "1:277885993716:web:8aa7aef7777f14417e14a1",
+    databaseURL: "https://signify-0326-default-rtdb.asia-southeast1.firebasedatabase.app/"
+   };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        onAuthStateChanged(auth, async user => {
+            if (!user) return;
+            const snap = await getDoc(doc(db, "users", user.uid));
+            if (!snap.exists()) return;
+            if (snap.data().stage1_complete === true) unlockStage2();
+        });
+
+        function unlockStage2() {
+            const card = document.getElementById('stage2-card');
+            const node = document.getElementById('stage2-node');
+            const badge = document.getElementById('stage2-badge');
+            const cta = document.getElementById('stage2-cta');
+            const soon = document.getElementById('stage2-soon');
+
+            // Swap div → a so it's clickable
+            const a = document.createElement('a');
+            a.href = 'learn-word-eating.html';
+            a.className = 'stage-card unlocked';
+            a.id = 'stage2-card';
+            a.innerHTML = card.innerHTML;
+            card.replaceWith(a);
+
+            // Hide locked badge + soon tag
+            document.getElementById('stage2-badge').style.display = 'none';
+            document.getElementById('stage2-soon').style.display = 'none';
+
+            // Unlock node
+            node.classList.replace('locked', 'unlocked');
+
+            // Swap CTA
+            const newCta = document.getElementById('stage2-cta');
+            newCta.classList.remove('locked-cta');
+            newCta.innerHTML = 'Start <i class="bi bi-arrow-right"></i>';
+        }
+    </script>
+
+    <script type="module" src="js/firebase-auth.js"></script>
+
+</body>
+
+</html>

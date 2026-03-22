@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Leaderboard – Signify</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/bootstrap-icons.css" rel="stylesheet">
+  <link href="css/templatemo-first-portfolio-style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --signify-blue: #648FFF;
+      --signify-dark: #1e293b;
+      --signify-accent: #FE6100;
+      --signify-light: #f8fafc;
+      --text-high-contrast: #0f172a;
+      --text-muted: #64748b;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+    }
+.site-footer .copyright-text-wrap {
+  border: none !important;
+}
+
+.site-footer .copyright-text {
+  border: none !important;
+}
+
+.site-footer p {
+  border: none !important;
+}
+    body {
+      background: var(--signify-light);
+      min-height: 100vh;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text-high-contrast);
+    }
+
+    .leaderboard-page {
+      padding: 100px 0 60px;
+    }
+
+    .navbar-brand {
+      color: var(--signify-blue) !important;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 2rem;
+    }
+
+    .page-title {
+      color: var(--text-high-contrast);
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .page-subtitle {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: 36px;
+    }
+
+    /* ── Stat tabs ── */
+    .stat-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .stat-tab {
+      background: var(--card-bg);
+      border: 2px solid var(--card-border);
+      border-radius: 10px;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 18px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .stat-tab:hover {
+      border-color: var(--signify-blue);
+      color: var(--signify-blue);
+    }
+
+    .stat-tab.active {
+      background: #eff6ff;
+      border-color: var(--signify-blue);
+      color: var(--signify-blue);
+    }
+
+    /* ── Leaderboard card ── */
+    .leaderboard-card {
+      background: var(--card-bg);
+      border: 2px solid var(--card-border);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(100, 143, 255, 0.08);
+    }
+
+    /* ── Table ── */
+    .lb-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .lb-table thead tr {
+      border-bottom: 2px solid var(--card-border);
+    }
+
+    .lb-table thead th {
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 16px 20px;
+    }
+
+    .lb-table tbody tr {
+      border-bottom: 1px solid var(--card-border);
+      transition: background 0.15s;
+    }
+
+    .lb-table tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    .lb-table tbody tr:hover {
+      background: var(--signify-light);
+    }
+
+    .lb-table tbody tr.is-current-user {
+      background: #eff6ff;
+      border-left: 3px solid var(--signify-blue);
+    }
+
+    .lb-table tbody tr.is-current-user:hover {
+      background: #dbeafe;
+    }
+
+    .lb-table tbody td {
+      padding: 14px 20px;
+      color: var(--text-high-contrast);
+      font-size: 14px;
+    }
+
+    .rank-col {
+      width: 60px;
+      font-weight: 700;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .rank-1 {
+      color: #f59e0b;
+    }
+
+    .rank-2 {
+      color: #94a3b8;
+    }
+
+    .rank-3 {
+      color: #b45309;
+    }
+
+    .table-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+
+    .user-cell {
+      display: flex;
+      align-items: center;
+    }
+
+    .you-badge {
+      display: inline-block;
+      background: #eff6ff;
+      border: 1px solid var(--signify-blue);
+      border-radius: 6px;
+      color: var(--signify-blue);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      margin-left: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-val-col {
+      font-weight: 700;
+      color: var(--signify-blue);
+      text-align: right;
+    }
+
+    .lb-divider td {
+      padding: 8px 20px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 12px;
+      border-bottom: 1px solid var(--card-border) !important;
+      background: var(--signify-light);
+      letter-spacing: 1px;
+    }
+
+    .loading-wrap, .empty-wrap {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+    }
+
+    .loading-wrap .spinner-border {
+      color: var(--signify-blue);
+    }
+
+    .login-notice {
+      background: #eff6ff;
+      border: 1px solid rgba(100, 143, 255, 0.3);
+      border-radius: 12px;
+      padding: 14px 20px;
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .login-notice a {
+      color: var(--signify-blue);
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg bg-white shadow-sm">
+    <div class="container">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a href="index.html" class="navbar-brand mx-auto mx-lg-0">Signify</a>
+      <div class="d-flex align-items-center d-lg-none">
+        <i class="navbar-icon bi-person-circle me-3 profile-icon-btn"
+          style="cursor:pointer;font-size:22px;color:var(--signify-blue);"></i>
+      </div>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-lg-5">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="learn.html">Learn</a></li>
+          <li class="nav-item"><a class="nav-link active" href="leaderboard.html">Leaderboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="game.html">Game</a></li>
+          <li class="nav-item"><a class="nav-link" href="profile.html">Profile</a></li>
+        </ul>
+        <div class="d-lg-flex align-items-center d-none ms-auto">
+          <i class="navbar-icon bi-person-circle me-3 profile-icon-btn"
+            style="cursor:pointer;font-size:22px;color:var(--signify-blue);"></i>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="padding-top:130px;padding-bottom:60px;">
+    <div class="container"
+    >
+
+      <h1 class="page-title">Leaderboard</h1>
+      <p class="page-subtitle">Top 50 users across all stats</p>
+
+      <div class="login-notice" id="loginNotice">
+        <i class="bi-info-circle me-2"></i>
+        <a onclick="document.getElementById('authModal').style.display='flex'">Sign in</a>
+        to see your ranking highlighted.
+      </div>
+
+      <div class="stat-tabs">
+        <button class="stat-tab active" onclick="switchTab('xp', this)">
+          <span class="material-icons" style="font-size:16px;">bolt</span>
+          XP
+        </button>
+        <button class="stat-tab" onclick="switchTab('challenges', this)">
+          <span class="material-icons" style="font-size:16px;">task_alt</span>
+          Challenges
+        </button>
+        <button class="stat-tab" onclick="switchTab('streak', this)">
+          <span class="material-icons" style="font-size:16px;">local_fire_department</span>
+          Longest Streak
+        </button>
+      </div>
+
+      <div class="leaderboard-card">
+        <div id="loadingState" class="loading-wrap">
+          <div class="spinner-border" role="status"></div>
+          <p class="mt-3">Loading leaderboard...</p>
+        </div>
+
+        <div id="leaderboardWrap" style="display:none;">
+          <table class="lb-table">
+            <thead>
+              <tr>
+                <th class="rank-col">#</th>
+                <th>User</th>
+                <th style="text-align:right;" id="statColHeader">XP</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboardBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-12">
+          <div class="copyright-text-wrap">
+            <p class="mb-0">
+              <span class="copyright-text">Copyright © 2026 <a href="#">Signify</a>. All rights reserved.</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/custom.js"></script>
+  <script type="module" src="js/firebase-auth.js"></script>
+  <script type="module" src="js/leaderboard.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Profile – Signify</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/bootstrap-icons.css" rel="stylesheet">
+  <link href="css/templatemo-first-portfolio-style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --signify-blue: #648FFF;
+      --signify-dark: #1e293b;
+      --signify-accent: #FE6100;
+      --signify-light: #f8fafc;
+      --text-high-contrast: #0f172a;
+      --text-muted: #64748b;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+    }
+.site-footer .copyright-text-wrap {
+  border: none !important;
+}
+
+.site-footer .copyright-text {
+  border: none !important;
+}
+
+.site-footer p {
+  border: none !important;
+}
+    body {
+      background: var(--signify-light);
+      min-height: 100vh;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text-high-contrast);
+    }
+
+    .navbar-brand {
+      color: var(--signify-blue) !important;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 2rem;
+    }
+
+    .custom-btn {
+      background: var(--signify-blue);
+      border-color: var(--signify-blue);
+      color: white;
+      font-weight: bold;
+    }
+
+    .custom-btn:hover {
+      background: var(--signify-dark);
+      border-color: var(--signify-dark);
+      color: white;
+    }
+
+    .profile-page {
+      padding: 100px 0 60px;
+    }
+
+    /* ── Side-by-side layout ── */
+    .profile-layout {
+      display: flex;
+      align-items: stretch;
+      gap: 20px;
+    }
+
+    .profile-col {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .badge-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-width: 0;
+    }
+
+    /* ── Profile card ── */
+    .profile-card {
+      background: var(--card-bg);
+      border: 2px solid var(--card-border);
+      border-radius: 15px;
+      padding: 48px 40px;
+      text-align: center;
+      box-shadow: 0 4px 24px rgba(100, 143, 255, 0.08);
+      transition: border-color 0.2s;
+      height: 100%;
+    }
+
+    .profile-card:hover {
+      border-color: var(--signify-blue);
+    }
+
+    /* ── Side badge cards ── */
+    .side-card {
+      background: var(--card-bg);
+      border: 2px solid var(--card-border);
+      border-radius: 15px;
+      padding: 22px 22px 18px;
+      box-shadow: 0 4px 24px rgba(100, 143, 255, 0.08);
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .side-card:hover {
+      border-color: var(--signify-blue);
+    }
+
+    .side-card-title {
+      color: var(--text-muted);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--card-border);
+      flex-shrink: 0;
+    }
+
+    /* Scrollable inner area */
+    .side-card-body {
+      overflow-y: auto;
+      flex: 1;
+      min-height: 0;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(100, 143, 255, 0.3) transparent;
+    }
+
+    .side-card-body::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .side-card-body::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .side-card-body::-webkit-scrollbar-thumb {
+      background: rgba(100, 143, 255, 0.3);
+      border-radius: 99px;
+    }
+
+    /* ── Avatar ── */
+    .avatar-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      font-size: 52px;
+      font-weight: 700;
+      color: #fff;
+      border: 3px solid rgba(100, 143, 255, 0.2);
+    }
+
+    .profile-name {
+      color: var(--text-high-contrast);
+      font-size: 26px;
+      font-weight: 700;
+      margin: 0 0 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .profile-email {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin: 0 0 10px;
+    }
+
+    .badge-joined {
+      display: inline-block;
+      background: #eff6ff;
+      border: 1px solid rgba(100, 143, 255, 0.3);
+      border-radius: 20px;
+      color: var(--signify-blue);
+      font-size: 12px;
+      padding: 4px 14px;
+    }
+
+    /* ── Stats ── */
+    .stats-section {
+      margin-top: 36px;
+    }
+
+    .stats-label {
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      text-align: left;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .stat-card {
+      background: var(--signify-light);
+      border: 2px solid var(--card-border);
+      border-radius: 14px;
+      padding: 22px 10px;
+      text-align: center;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .stat-card:hover {
+      border-color: var(--signify-blue);
+      transform: translateY(-3px);
+    }
+
+    .stat-icon {
+      font-size: 22px;
+      margin-bottom: 8px;
+      display: block;
+      color: var(--signify-accent);
+    }
+
+    .stat-value {
+      color: var(--signify-blue);
+      font-size: 26px;
+      font-weight: 700;
+      display: block;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-label {
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ── Earned badge tiles ── */
+    .earned-badge-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--signify-light);
+      border: 2px solid var(--card-border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 8px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .earned-badge-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .earned-badge-item:hover {
+      border-color: var(--signify-blue);
+      transform: translateY(-2px);
+    }
+
+    .earned-badge-icon {
+      font-size: 24px;
+      width: 42px;
+      height: 42px;
+      background: #eff6ff;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .earned-badge-info {
+      min-width: 0;
+    }
+
+    .earned-badge-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-high-contrast);
+      margin: 0 0 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .earned-badge-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ── Progress badge rows ── */
+    .progress-badge-item {
+      margin-bottom: 16px;
+    }
+
+    .progress-badge-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .progress-badge-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 7px;
+    }
+
+    .progress-badge-icon {
+      font-size: 20px;
+      width: 36px;
+      height: 36px;
+      background: var(--signify-light);
+      border: 2px solid var(--card-border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .progress-badge-label {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .progress-badge-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-high-contrast);
+      margin: 0;
+    }
+
+    .progress-badge-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .progress-badge-pct {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--signify-blue);
+      white-space: nowrap;
+    }
+
+    .progress-bar-track {
+      height: 6px;
+      background: var(--card-border);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--signify-blue), #a5b4fc);
+      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .empty-msg {
+      text-align: center;
+      padding: 24px 10px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .empty-msg span {
+      font-size: 30px;
+      display: block;
+      margin-bottom: 8px;
+      opacity: 0.4;
+    }
+
+    /* ── Not logged in ── */
+    .not-logged-in {
+      text-align: center;
+      padding: 80px 20px;
+    }
+
+    .not-logged-in i {
+      font-size: 52px;
+      color: var(--signify-blue);
+      display: block;
+      margin-bottom: 16px;
+    }
+
+    .not-logged-in h3 {
+      color: var(--text-high-contrast);
+      margin-bottom: 8px;
+    }
+
+    .not-logged-in p {
+      color: var(--text-muted);
+    }
+
+    .btn-signin {
+      background: var(--signify-blue);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 12px 28px;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s;
+    }
+
+    .btn-signin:hover {
+      background: var(--signify-dark);
+    }
+
+    .loading-wrap {
+      text-align: center;
+      padding: 100px;
+      color: var(--text-muted);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .profile-layout {
+        flex-direction: column;
+      }
+
+      .profile-col {
+        flex: none;
+        width: 100%;
+      }
+
+      .side-card {
+        min-height: 260px;
+        flex: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg bg-white shadow-sm">
+    <div class="container">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a href="index.html" class="navbar-brand mx-auto mx-lg-0">Signify</a>
+      <div class="d-flex align-items-center d-lg-none">
+        <i class="navbar-icon bi-person-circle me-3 profile-icon-btn"
+          style="cursor:pointer;font-size:22px;color:var(--signify-blue);"></i>
+      </div>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-lg-5">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="learn.html">Learn</a></li>
+          <li class="nav-item"><a class="nav-link" href="leaderboard.html">Leaderboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="game.html">Game</a></li>
+          <li class="nav-item"><a class="nav-link active" href="profile.html">Profile</a></li>
+        </ul>
+        <div class="d-lg-flex align-items-center d-none ms-auto">
+          <i class="navbar-icon bi-person-circle me-3 profile-icon-btn"
+            style="cursor:pointer;font-size:22px;color:var(--signify-blue);"></i>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="profile-page">
+    <div class="container">
+
+      <!-- Loading -->
+      <div id="loadingState" class="loading-wrap">
+        <div class="spinner-border" style="color:var(--signify-blue);" role="status"></div>
+      </div>
+
+      <!-- Not logged in -->
+      <div id="notLoggedIn" style="display:none;">
+        <div class="not-logged-in">
+          <i class="bi-person-lock"></i>
+          <h3>You're not signed in</h3>
+          <p>Sign in to view your profile and stats.</p>
+          <button class="btn-signin" onclick="document.getElementById('authModal').style.display='flex'">Sign
+            In</button>
+        </div>
+      </div>
+
+      <!-- Profile content -->
+      <div id="profileContent" style="display:none;">
+        <div class="profile-layout">
+
+          <!-- LEFT: profile card -->
+          <div class="profile-col">
+            <div class="profile-card">
+              <div class="avatar-circle" id="avatarCircle"></div>
+              <h2 class="profile-name" id="profileName">—</h2>
+              <p class="profile-email" id="profileEmail">—</p>
+              <span class="badge-joined" id="profileJoined"></span>
+
+              <div class="stats-section">
+                <p class="stats-label">All-time stats</p>
+                <div class="stats-grid">
+                  <div class="stat-card">
+                    <span class="stat-icon material-icons">local_fire_department</span>
+                    <span class="stat-value" id="statLongestStreak">0</span>
+                    <span class="stat-label">Longest Streak</span>
+                  </div>
+                  <div class="stat-card">
+                    <span class="stat-icon material-icons">whatshot</span>
+                    <span class="stat-value" id="statCurrentStreak">0</span>
+                    <span class="stat-label">Current Streak</span>
+                  </div>
+                  <div class="stat-card">
+                    <span class="stat-icon material-icons">task_alt</span>
+                    <span class="stat-value" id="statChallenges">0</span>
+                    <span class="stat-label">Challenges</span>
+                  </div>
+                  <div class="stat-card">
+                    <span class="stat-icon material-icons">bolt</span>
+                    <span class="stat-value" id="statXP">0</span>
+                    <span class="stat-label">XP</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: two stacked badge cards -->
+          <div class="badge-col">
+
+            <div class="side-card">
+              <p class="side-card-title">
+                <span style="display:inline-flex;align-items:center;gap:6px;">
+                  <span class="material-symbols-outlined" style="font-size:18px;">star_shine</span>
+                  Badges Earned
+                </span>
+                <span id="earnedBadgeCount"
+                  style="color:var(--signify-blue);font-size:12px;letter-spacing:0;text-transform:none;font-weight:700;margin-left:4px;"></span>
+              </p>
+              <div class="side-card-body" id="earnedBadgesList">
+                <div class="empty-msg"><span>🏅</span>Loading...</div>
+              </div>
+            </div>
+
+            <div class="side-card">
+            <p class="side-card-title">
+              <span style="display:inline-flex;align-items:center;gap:6px;">
+                <span class="material-symbols-outlined" style="font-size:18px;">star</span>
+                Badge Progress
+              </span>
+            </p>
+            <div class="side-card-body" id="badgeProgressList">
+                <div class="empty-msg"><span>📊</span>Loading...</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-12">
+          <div class="copyright-text-wrap">
+            <p class="mb-0">
+              <span class="copyright-text">Copyright © 2026 <a href="#">Signify</a>. All rights reserved.</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/jquery.sticky.js"></script>
+  <script src="js/custom.js"></script>
+  <script type="module" src="js/firebase-auth.js"></script>
+  <script type="module" src="js/profile.js"></script>
+
+</body>
+
+</html>

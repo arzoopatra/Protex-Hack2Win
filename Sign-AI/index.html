@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SignAI - AI Sign Language Translator</title>
+    <script src="https://cdn.lingo.dev/compiler/v1.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <style>
+    /* HEADER FIX */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+  /* 🔥 Rounded Square Back Button */
+  /* SAME STYLE AS THEME BUTTON */
+.back-btn {
+  width: 37px;
+  height: 37px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+  background: transparent;   /* 👈 important */
+  color: inherit;            /* 👈 same color as theme icon */
+
+  border: 1px solid #e0e0e0; /* light border */
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+/* Hover */
+.back-btn:hover {
+  background: #007bff;
+  color: white;
+}
+
+/* 🌙 Dark Mode */
+body.dark .back-btn {
+  background: transparent;
+}
+
+body.dark .back-btn:hover {
+  background: #4a90ff;
+}
+  h1 {
+  margin: 0;
+}
+  </style>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+<a href="../index.html" class="back-btn">
+  <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+    <path 
+      d="M12 4L6 10L12 16" 
+      stroke="currentColor" 
+      stroke-width="2.5" 
+      stroke-linecap="round" 
+      stroke-linejoin="round"
+    />
+  </svg>
+</a>      <h1>SignAI</h1>
+    </div>
+      <button class="theme-toggle" id="themeToggle" title="Toggle Dark Mode">
+        <svg
+          class="theme-icon"
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            class="sun-icon"
+            d="M10 3V1M10 19V17M17 10H19M1 10H3M15.657 4.343L17.071 2.929M2.929 17.071L4.343 15.657M15.657 15.657L17.071 17.071M2.929 2.929L4.343 4.343M14 10C14 12.2091 12.2091 14 10 14C7.79086 14 6 12.2091 6 10C6 7.79086 7.79086 6 10 6C12.2091 6 14 7.79086 14 10Z"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+          <path
+            class="moon-icon"
+            d="M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C10.395 3 10.781 3.034 11.157 3.099C9.84901 4.066 9 5.616 9 7.375C9 10.136 11.239 12.375 14 12.375C15.759 12.375 17.309 11.526 18.276 10.218C18.341 10.594 18.375 10.98 18.375 11.375C18.375 11.583 18.367 11.789 18.351 11.993C17.956 11.331 17.5 10.7 17 10.118V10Z"
+            fill="currentColor"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Main Layout -->
+    <div class="app-container">
+      <!-- Left: Camera Section -->
+      <div class="camera-section">
+        <video id="video" style="display: none"></video>
+        <canvas id="canvas" width="640" height="480"></canvas>
+
+        <div class="camera-info">
+          <div class="status-badge" id="status">Initializing...</div>
+          <div class="gesture-display" id="output">—</div>
+        </div>
+
+        <!-- Confidence Score -->
+        <div class="confidence-container">
+          <div class="confidence-label">
+            <span>Confidence</span>
+            <span class="confidence-value" id="confidenceValue">0%</span>
+          </div>
+          <div class="confidence-bar-bg">
+            <div class="confidence-bar-fill" id="confidenceBar"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Controls Section -->
+      <div class="controls-section">
+        <!-- Current Sentence -->
+        <div class="card">
+          <div class="card-header">Current Sentence</div>
+          <div class="sentence-display" id="sentenceText">
+            Waiting for gesture...
+          </div>
+
+          <div class="action-buttons">
+            <button class="btn-secondary" id="clearSentence">Clear</button>
+            <button class="btn-primary" id="speakSentence">Speak</button>
+            <button class="btn-secondary" id="exportBtn">Export</button>
+          </div>
+        </div>
+
+        <!-- Speed Control -->
+        <div class="card">
+          <div class="card-header">
+            Detection Speed
+            <span class="speed-label" id="speedLabel">Normal Mode</span>
+          </div>
+          <div class="speed-control">
+            <span class="speed-icon">🐢</span>
+            <input
+              type="range"
+              id="speedSlider"
+              min="300"
+              max="1500"
+              value="900"
+              step="100"
+              class="speed-slider"
+            />
+            <span class="speed-icon">🚀</span>
+          </div>
+          <div class="speed-hint">
+            Adjust detection speed: Fast for experts, Slow for learning
+          </div>
+        </div>
+
+        <!-- Quick Phrases -->
+        <div class="card">
+          <div class="card-header">Quick Phrases</div>
+          <div class="quick-phrases">
+            <button class="phrase-btn" data-phrase="Hello, how are you?">
+              Hello
+            </button>
+            <button class="phrase-btn" data-phrase="Thank you very much!">
+              Thank you
+            </button>
+            <button class="phrase-btn" data-phrase="I need help, please.">
+              Need help
+            </button>
+            <button class="phrase-btn" data-phrase="Yes, I understand.">
+              Yes
+            </button>
+            <button class="phrase-btn" data-phrase="No, I don't understand.">
+              No
+            </button>
+            <button class="phrase-btn" data-phrase="Please wait a moment.">
+              Wait
+            </button>
+          </div>
+        </div>
+
+        <!-- Translation -->
+        <div class="card">
+          <div class="card-header">Translate</div>
+          <select id="languageSelect" class="language-select">
+            <option value="en">English</option>
+            <option value="hi">Hindi (हिंदी)</option>
+            <option value="ta">Tamil (தமிழ்)</option>
+            <option value="te">Telugu (తెలుగు)</option>
+            <option value="es">Spanish (Español)</option>
+            <option value="fr">French (Français)</option>
+          </select>
+          <button
+            class="btn-primary"
+            id="translateBtn"
+            style="width: 100%; margin-top: 12px"
+          >
+            Translate
+          </button>
+          <div class="translation-result" id="translatedText">—</div>
+        </div>
+
+        <!-- Conversation History -->
+        <div class="card">
+          <div class="card-header">
+            History
+            <button class="btn-text" id="clearHistory">Clear</button>
+          </div>
+          <div class="history-list" id="historyContainer">
+            <div class="empty-state">Your conversation will appear here</div>
+          </div>
+        </div>
+      </div>
+    </div>
+        
+    <!-- MediaPipe -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+
+    <!-- Main Logic -->
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "title": "साइनलिंगुआ — हाथ की पहचान",
+  "instruction": "कैमरा अनुमति दें। हाथ दिखाएं।",
+  "status_waiting": "स्थिति: प्रतीक्षा",
+  "translate_header": "वाक्य अनुवाद",
+  "translate_btn": "अनुवाद करें",
+  "translated_label": "अनुवाद:",
+  "sentence_label": "वाक्य:",
+  "clear_btn": "साफ़ करें",
+  "speak_btn": "बोलें",
+  "chooseLang": "भाषा चुनें:"
+}

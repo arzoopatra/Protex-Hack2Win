@@ -1,0 +1,21 @@
+{
+  "version": "1.10",
+  "locale": {
+    "source": "en",
+    "targets": [
+      "hi",
+      "ta",
+      "te",
+      "es",
+      "fr"
+    ]
+  },
+  "buckets": {
+    "json": {
+      "include": [
+        "Translations/[locale].json"
+      ]
+    }
+  },
+  "$schema": "https://lingo.dev/schema/Translations.json"
+}

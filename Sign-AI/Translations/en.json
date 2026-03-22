@@ -1,0 +1,12 @@
+{
+  "title": "SignLang — AI Hand Detection",
+  "instruction": "Allow camera access. Show your hand to see landmarks.",
+  "status_waiting": "Status: waiting",
+  "translate_header": "Translate Sentence",
+  "translate_btn": "Translate",
+  "translated_label": "Translated:",
+  "sentence_label": "Sentence:",
+  "clear_btn": "Clear",
+  "speak_btn": "Speak",
+  "chooseLang": "Choose UI Language:"
+}
