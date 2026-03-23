@@ -91,23 +91,24 @@
             background: var(--surface);
             border: 2px solid var(--border);
             border-radius: 24px;
-            padding: 48px;
-            max-width: 480px;
+            padding: 40px 30px;
+            max-width: 600px;
+            min-height: 320px;
             width: 100%;
             text-align: center;
             box-shadow: 0 4px 24px rgba(109, 139, 250, 0.07);
         }
 
         .lobby-icon {
-            width: 72px;
-            height: 72px;
+            width: 65px;
+            height: 65px;
             background: #eff3ff;
             border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 2rem;
-            margin: 0 auto 20px;
+            margin: 80px auto 20px;
         }
 
         .lobby-card h1 {
@@ -127,8 +128,6 @@
             font-size: 15px;
             line-height: 1.6;
         }
-
-        
 
         .divider {
             display: flex;
@@ -764,6 +763,19 @@
             color: var(--muted);
         }
 
+        .hw-step .num {
+            background: #648FFF;
+            color: white;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 6px;
+            font-weight: bold;
+        }
+
         @media(max-width:640px) {
             .cameras-grid {
                 grid-template-columns: 1fr
@@ -778,28 +790,6 @@
                 flex-direction: column
             }
         }
-
-.lobby-card {
-  border-radius: 20px;
-  border: 1px solid #e2e8f0;
-  padding: 30px;
-  max-width: 600px;
-  margin-left: auto;  
-}
-
-.hw-step .num {
-  background: #648FFF;
-  color: white;
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 6px;
-  font-weight: bold;
-}
-
     </style>
 </head>
 
@@ -848,7 +838,7 @@
 
       <!-- RIGHT SIDE -->
       <div class="col-lg-6">
-        <div class="lobby-card p-4 shadow-sm">
+        <div class="lobby-card p-30 shadow-sm">
 
           <div class="divider">or join with a code</div>
 
@@ -888,9 +878,7 @@
                 <div class="desc small">First to sign correctly wins the round. Best of 5!</div>
               </div>
             </div>
-
           </div>
-
         </div>
       </div>
 </div>
