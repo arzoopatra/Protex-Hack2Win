@@ -10,6 +10,13 @@ https://arzoopatra.github.io/Protex-Hack2Win/index.html
 - Progress only when signs are performed correctly  
 - Reinforces accuracy and muscle memory  
 
+### 🤖 SignAI (Built-in Feature) 
+Real-time sign language translator:
+- Detects ASL gestures using AI  
+- Builds meaningful sentences  
+- Translates into multiple languages  
+- Converts output to speech instantly
+
 ### ⚔️ Live Battle Mode
 - Compete with players in real-time  
 - Create or join rooms  
@@ -34,16 +41,6 @@ Track your performance:
 - Learn ASL words and phrases  
 - Practice real-life conversations  
 - Reference images from trusted sources  
-
-### 🤖 SignAI (Built-in Feature) 
-Real-time sign language translator:
-- Detects ASL gestures using AI  
-- Builds meaningful sentences  
-- Translates into multiple languages  
-- Converts output to speech instantly  
-
-**🌐 Supported Languages:**  
-Hindi, Tamil, Telugu, French, Spanish  
 
 ### 🔒 Privacy Focused
 - 100% on-device processing  
