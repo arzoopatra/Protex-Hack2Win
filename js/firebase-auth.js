@@ -1,16 +1,26 @@
-import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+  initializeApp,
+  getApps,
+  getApp
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+
 import {
   getFirestore,
   doc,
   setDoc
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithPopup
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+// ── Firebase Initialization ──────────────────────────────────
 
 const firebaseConfig = {
   apiKey: "AIzaSyAtvEg9LMPYz_ksNsPkWXjSof85XD0BhWc",
@@ -22,20 +32,42 @@ const firebaseConfig = {
   databaseURL: "https://signify-0326-default-rtdb.asia-southeast1.firebasedatabase.app/"
 };
 
-const app = getApps().length ? getApp() : initializeApp(firebaseConfig); const auth = getAuth(app);
+const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
+const provider = new GoogleAuthProvider();
 
-// ── Build default alphabet subcollection entries ─────────────
+// ── Google Sign-In Logic ─────────────────────────────────────
+
+document.addEventListener("click", async (e) => {
+  if (e.target.closest("#googleSignInBtn")) {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      const isNewUser = result._tokenResponse?.isNewUser;
+
+      if (isNewUser) {
+        await createUserDocument(user.uid, user.email, user.displayName || "User");
+      }
+
+      closeModal();
+    } catch (err) {
+      console.error("Google error:", err);
+    }
+  }
+});
+
+// ── Firestore Data Helpers ───────────────────────────────────
 
 function buildAlphabetDocs() {
   const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
   return letters.reduce((acc, letter) => {
-    acc[letter] = { learned: false };
+    acc[letter] = {
+      learned: false
+    };
     return acc;
   }, {});
 }
-
-// ── Create user document on sign-up ─────────────────────────
 
 async function createUserDocument(uid, email, displayName) {
   await setDoc(doc(db, "users", uid), {
@@ -56,10 +88,9 @@ async function createUserDocument(uid, email, displayName) {
   }
 }
 
-// ── Inject modal + dropdown HTML ─────────────────────────────
+// ── UI Injection (Modal & Dropdown) ──────────────────────────
 
 document.body.insertAdjacentHTML("beforeend", `
-
   <div id="authModal" style="
     display:none;position:fixed;inset:0;z-index:9999;
     background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);
@@ -90,9 +121,21 @@ document.body.insertAdjacentHTML("beforeend", `
 
       <div id="formSignIn">
         <h3 style="color:#0f172a;margin-bottom:24px;font-size:22px;">Welcome back</h3>
+        <button id="googleSignInBtn" style="
+          width:100%;padding:13px;margin-bottom:14px;background:#ffffff;
+          border:1px solid #e2e8f0;border-radius:8px;display:flex;
+          align-items:center;justify-content:center;gap:10px;font-weight:600;
+          cursor:pointer;transition:all .2s;
+        " onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='#ffffff'">
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18">
+          Continue with Google
+        </button>
+        <div style="text-align:center;margin:10px 0;color:#94a3b8;font-size:13px;">or</div>
         <input id="siEmail" type="email" placeholder="Email address" style="width:100%;padding:13px 16px;margin-bottom:14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;color:#0f172a;font-size:14px;box-sizing:border-box;outline:none;">
         <input id="siPassword" type="password" placeholder="Password" style="width:100%;padding:13px 16px;margin-bottom:20px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;color:#0f172a;font-size:14px;box-sizing:border-box;outline:none;">
-        <button onclick="handleSignIn()" style="width:100%;padding:14px;background:#648FFF;border:none;border-radius:8px;color:#fff;font-size:15px;font-weight:600;cursor:pointer;">Sign In</button>
+        <button onclick="handleSignIn()" style="width:100%;padding:14px;background:#648FFF;border:none;border-radius:8px;color:#fff;font-size:15px;font-weight:600;cursor:pointer;">
+          Sign In
+        </button>
         <p id="siError" style="color:#ff6b6b;font-size:13px;margin-top:12px;display:none;"></p>
       </div>
 
@@ -125,9 +168,9 @@ document.body.insertAdjacentHTML("beforeend", `
   </div>
 `);
 
-// ── Tab switching ────────────────────────────────────────────
+// ── UI Control Logic ─────────────────────────────────────────
 
-window.switchTab = function (tab) {
+window.switchTab = function(tab) {
   const isSignIn = tab === "signin";
   document.getElementById("formSignIn").style.display = isSignIn ? "block" : "none";
   document.getElementById("formSignUp").style.display = isSignIn ? "none" : "block";
@@ -137,17 +180,20 @@ window.switchTab = function (tab) {
   document.getElementById("tabSignUp").style.borderBottom = isSignIn ? "2px solid transparent" : "2px solid #648FFF";
 };
 
-// ── Modal open/close ─────────────────────────────────────────
+function openModal() {
+  document.getElementById("authModal").style.display = "flex";
+}
 
-function openModal() { document.getElementById("authModal").style.display = "flex"; }
-function closeModal() { document.getElementById("authModal").style.display = "none"; }
+function closeModal() {
+  document.getElementById("authModal").style.display = "none";
+}
 
 document.getElementById("authModalClose").addEventListener("click", closeModal);
-document.getElementById("authModal").addEventListener("click", function (e) {
+document.getElementById("authModal").addEventListener("click", function(e) {
   if (e.target === this) closeModal();
 });
 
-// ── Dropdown logic ───────────────────────────────────────────
+// ── Dropdown Logic ───────────────────────────────────────────
 
 let dropdownOpen = false;
 
@@ -155,7 +201,10 @@ function handleIconClick(e) {
   const user = auth.currentUser;
   const dropdown = document.getElementById("profileDropdown");
 
-  if (!user) { openModal(); return; }
+  if (!user) {
+    openModal();
+    return;
+  }
 
   if (dropdownOpen) {
     dropdown.style.display = "none";
@@ -171,7 +220,7 @@ function handleIconClick(e) {
   dropdownOpen = true;
 }
 
-document.addEventListener("click", function (e) {
+document.addEventListener("click", function(e) {
   const dropdown = document.getElementById("profileDropdown");
   if (dropdownOpen && !dropdown.contains(e.target) && !e.target.classList.contains("profile-icon-btn")) {
     dropdown.style.display = "none";
@@ -179,9 +228,9 @@ document.addEventListener("click", function (e) {
   }
 });
 
-// ── Auth handlers ────────────────────────────────────────────
+// ── Auth Handlers ────────────────────────────────────────────
 
-window.handleSignIn = async function () {
+window.handleSignIn = async function() {
   const email = document.getElementById("siEmail").value.trim();
   const password = document.getElementById("siPassword").value;
   const errEl = document.getElementById("siError");
@@ -195,7 +244,7 @@ window.handleSignIn = async function () {
   }
 };
 
-window.handleSignUp = async function () {
+window.handleSignUp = async function() {
   const name = document.getElementById("suName").value.trim();
   const email = document.getElementById("suEmail").value.trim();
   const password = document.getElementById("suPassword").value;
@@ -203,8 +252,16 @@ window.handleSignUp = async function () {
   const errEl = document.getElementById("suError");
   errEl.style.display = "none";
 
-  if (!name) { errEl.textContent = "Please enter a display name."; errEl.style.display = "block"; return; }
-  if (password !== password2) { errEl.textContent = "Passwords don't match."; errEl.style.display = "block"; return; }
+  if (!name) {
+    errEl.textContent = "Please enter a display name.";
+    errEl.style.display = "block";
+    return;
+  }
+  if (password !== password2) {
+    errEl.textContent = "Passwords don't match.";
+    errEl.style.display = "block";
+    return;
+  }
 
   try {
     const cred = await createUserWithEmailAndPassword(auth, email, password);
@@ -216,13 +273,13 @@ window.handleSignUp = async function () {
   }
 };
 
-window.handleSignOut = async function () {
+window.handleSignOut = async function() {
   await signOut(auth);
   document.getElementById("profileDropdown").style.display = "none";
   dropdownOpen = false;
 };
 
-// ── Auth state — icon colour only ───────────────────────────
+// ── Auth State Observer ──────────────────────────────────────
 
 onAuthStateChanged(auth, (user) => {
   document.querySelectorAll(".profile-icon-btn").forEach(icon => {
@@ -230,7 +287,7 @@ onAuthStateChanged(auth, (user) => {
   });
 });
 
-// ── Friendly errors ──────────────────────────────────────────
+// ── Error Messaging ──────────────────────────────────────────
 
 function friendlyError(code) {
   const map = {
@@ -245,7 +302,7 @@ function friendlyError(code) {
   return map[code] || "Something went wrong. Please try again.";
 }
 
-// ── Attach icon click handlers ───────────────────────────────
+// ── Initialization ───────────────────────────────────────────
 
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".profile-icon-btn").forEach(icon => {
