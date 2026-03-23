@@ -1,91 +1,81 @@
-# 🛡️ Signify – Smart Safety & Assistance Platform
-
- Signify  is an AI-powered safety and accessibility platform designed to enhance communication, personal security, and real-time assistance. It integrates intelligent features such as sign language translation, emergency alerts, and user-friendly interaction tools to create a safer and more inclusive digital environment.
+# ✋ Signify: Learn, Compete, and Communicate with Sign Language — Powered by AI
 
 🌐 **Live Demo:**  
 https://arzoopatra.github.io/Protex-Hack2Win/index.html
 
 ---
-
 ## 🚀 Features
 
-### 🔤 SignAI Live Translator
-- Converts sign language into speech in real-time  
-- Enhances accessibility for hearing and speech-impaired individuals  
-- AI-powered gesture recognition system  
-
-### 🚨 Emergency Assistance
-- Quick-access emergency alert system  
-- Designed for rapid response in critical situations  
-- User-friendly interface for immediate action  
-
-### 🧠 Intelligent Interaction
-- Clean and intuitive UI/UX  
-- Fast response system for smooth user experience  
-- Designed for accessibility and ease of use  
-
-### 📱 Responsive Design
-- Works across mobile, tablet, and desktop  
-- Optimized layout for seamless navigation  
+### 🎓 Interactive ASL Learning
+- Real-time AI feedback on hand gestures  
+- Progress only when signs are performed correctly  
+- Reinforces accuracy and muscle memory  
 
 ---
 
-## 🛠️ Tech Stack
-
-**Frontend:**
-- HTML5  
-- CSS3  
-- JavaScript  
-
-**Core Concepts:**
-- AI-based gesture interpretation (conceptual integration)  
-- Real-time interaction handling  
-- Responsive web design  
+### ⚔️ Live Battle Mode
+- Compete with players in real-time  
+- Create or join rooms  
+- First to perform the correct sign wins 🏆  
 
 ---
 
-## 📂 Project Structure
-
-     Signify /
-    ├── index.html        # Main landing page
-    ├── style.css         # Styling and layout
-    ├── script.js         # Core functionality
-    └── assets/           # Images, icons, media files
----
-
-## ⚙️ How It Works
-
-1. User interacts with the interface through the browser  
-2. Sign language gestures are processed (via AI-based logic / concept)  
-3. The system translates gestures into readable or audible output  
-4. Emergency tools provide quick-access safety features  
+### 🌍 Global Leaderboard
+- Earn XP and climb rankings  
+- Compete with learners worldwide  
 
 ---
 
-## 💡 Use Cases
-
-- Accessibility support for hearing/speech-impaired individuals  
-- Personal safety and emergency alert systems  
-- Smart assistance platforms  
-- Inclusive communication tools  
+### 📊 User Dashboard
+Track your performance:
+- 🔥 Longest streak  
+- 📈 Current streak  
+- ✅ Challenges completed  
+- ⭐ Total XP earned  
 
 ---
 
-## 🔧 Setup & Installation
+### ♿ Accessibility First
+- IBM colorblind-safe palette  
+- High contrast UI for better usability  
 
-Clone the repository:
+---
 
-```bash
-git clone https://github.com/arzoopatra/Protex-Hack2Win.git
+### 🧠 Guided Practice
+- Learn ASL words and phrases  
+- Practice real-life conversations  
+- Reference images from trusted sources  
 
-cd Protex-Hack2Win
+---
 
-## 🤝  Contributing
+### 🤖 SignAI (Built-in Feature)
 
-Contributions are welcome!
+Real-time sign language translator:
+- Detects ASL gestures using AI  
+- Builds meaningful sentences  
+- Translates into multiple languages  
+- Converts output to speech instantly  
 
-Fork the repository
-Create your branch (git checkout -b feature/YourFeature)
-Commit changes (git commit -m 'Add feature')
-Push (git push origin feature/YourFeature)
-Open a Pull Request
+**🌐 Supported Languages:**  
+Hindi, Tamil, Telugu, French, Spanish  
+
+---
+
+### 🔒 Privacy Focused
+- 100% on-device processing  
+- No video/image data stored  
+- Low latency and secure  
+
+---
+
+
+### 🌐 Real-Time Communication
+- WebRTC  
+
+---
+
+## ⭐ Contribution
+Feel free to fork this repository and contribute!  
+Pull requests are welcome.
+
+---
