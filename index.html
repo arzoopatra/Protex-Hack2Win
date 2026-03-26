@@ -179,7 +179,8 @@
 
         .feature-btn {
             text-decoration: none;
-            font-weight: 700;
+            font-weight: 800;
+            font-size: medium;
             color: #648FFF;
             white-space: nowrap;
             transition: 0.2s;
@@ -261,7 +262,7 @@
             <div class="feature-text">
                 <b>SignAI Live Translator</b> - Convert Sign language into Speech instantly with AI Translation
             </div>
-            <a href="./Sign-AI/index.html" class="feature-btn">Try Now</a>
+            <a href="./Sign-AI/index.html" class="feature-btn">Try Now &rarr;</a>
         </div>
 
         <div id="loadingView" class="text-center py-5" style="display:none;">
@@ -384,6 +385,39 @@
             </div>
         </div>
 
+<section style="margin-top: 10px; padding: 0; position: relative;">
+
+  <img 
+    src="images/signsprites.png"
+    style="
+      width: 100%;
+      height: auto;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      display: block;
+    "
+/>
+
+  <img 
+    id="playBtn"
+    src="images/play.png"
+    style="
+      position: absolute;
+      top: 52%;
+      left: 80%;
+      transform: translate(-50%, -50%);
+      width: 370px;
+      cursor: pointer;
+      z-index: 10;
+    "
+  />
+  <div class="text-block">
+  <div class="typing-text" id="typingText"></div>
+</div>
+</section>
+
+</section>
+
     </main>
 
     <footer class="site-footer">
@@ -400,11 +434,32 @@
         </div>
     </footer>
 
+    <script>
+  const playBtn = document.getElementById("playBtn");
+
+  playBtn.addEventListener("mouseenter", () => {
+    playBtn.src = "images/playhover.png";
+    playBtn.style.transform = "translate(-50%, -50%) scale(1)";
+  });
+
+  playBtn.addEventListener("mouseleave", () => {
+    playBtn.src = "images/play.png";
+    playBtn.style.transform = "translate(-50%, -50%) scale(1)";
+  });
+
+  playBtn.addEventListener("click", () => {
+    window.location.href = "game.html";
+  });
+</script>
+
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/custom.js"></script>
     <script type="module" src="js/firebase-auth.js"></script>
     <script type="module" src="js/home.js"></script>
+
+typeEffect();
+</script>
 </body>
 
 </html>
