@@ -79,7 +79,7 @@ const playBtn = document.getElementById("playBtn");
 
 playBtn.addEventListener("click", () => {
   requireAuth(() => {
-    window.location.href = "https://practicegame-signify.netlify.app/";
+    window.location.href = "https://practice-game-green.vercel.app/";
   });
 });
 

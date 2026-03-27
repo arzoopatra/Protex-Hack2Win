@@ -261,10 +261,10 @@
         }
 
         #waitingScreen.active {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+         display: flex;
+         justify-content: center;
+         align-items: center;
+        }
 
         .waiting-card {
             background: var(--surface);
@@ -385,28 +385,28 @@
         }
 
         .feature-banner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between; /* 🔥 important */
-  gap: 16px;
-  padding: 14px 20px;
-  border-radius: 14px;
-  background: #eef2ff;
-  border: 1px solid rgba(100, 143, 255, 0.3);
-  margin-bottom: 30px;
-}
+         display: flex;
+         align-items: center;
+         justify-content: space-between; /* 🔥 important */
+         gap: 16px;
+         padding: 14px 20px;
+         border-radius: 14px;
+         background: #eef2ff;
+         border: 1px solid rgba(100, 143, 255, 0.3);
+         margin-bottom: 30px;
+        }
 
         .feature-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  background: #648FFF;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-}
+         width: 40px;
+         height: 40px;
+         border-radius: 10px;
+         background: #648FFF;
+         color: white;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         font-size: 18px;
+        }
 
         .feature-text {
             flex: 1;
@@ -865,28 +865,18 @@
     <div class="screen active" id="lobbyScreen">
 
   <div class="container" style="margin-top: 90px;">
-
-    <!-- ✅ BANNER -->
     <div class="feature-banner mb-4">
       <div class="feature-icon">
         <i class="bi bi-controller"></i>
       </div>
-
       <div class="feature-text">
         <b>Sign Sprites</b> – Practice ASL with Gamified Exercises. Sign, Play, and Learn with Sign Sprites!
       </div>
-
       <a href="#" id="playNowGameBtn" class="feature-btn">Play Now →</a>
     </div>
-
-    <!-- ✅ ROW START -->
     <div class="row align-items-center">
-
-      <!-- LEFT -->
       <div class="col-lg-6 text-center mb-5 mb-lg-0">
-
         <div class="lobby-icon">&#x26A1;</div>
-
         <h1>Challenge <span style="color:#648FFF;">Mode</span></h1>
 
         <p>
@@ -900,7 +890,6 @@
 
       </div>
 
-      <!-- RIGHT SIDE -->
       <div class="col-lg-6">
         <div class="lobby-card p-30 shadow-sm">
 
@@ -919,7 +908,6 @@
              style="color:#ef4444;font-size:13px;margin-top:12px;display:none;">
           </p>
 
-          <!-- STEPS HORIZONTAL -->
           <div class="row text-center mt-4">
 
             <div class="col-4">
@@ -1093,15 +1081,15 @@
 
         const playNowGameBtn = document.getElementById("playNowGameBtn");
 
-playNowGameBtn.addEventListener("click", (e) => {
-  e.preventDefault();
+        playNowGameBtn.addEventListener("click", (e) => {
+        e.preventDefault();
 
-  if (auth.currentUser) {
-    window.location.href = "https://practicegame-signify.netlify.app/"; // 🚀 redirect
-  } else {
-    alert("Please sign in first");
-  }
-});
+        if (auth.currentUser) {
+          window.location.href = "https://practice-game-green.vercel.app/";
+        } else {
+        alert("Please sign in first");
+     }
+    });
 
         let currentUser = null;
         let roomCode = null, isHost = false, myRole = null;
