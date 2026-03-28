@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Signify - Learn ASL with AI">
     <title>Signify - Dashboard</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
@@ -17,259 +15,139 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-
+    <link rel="stylesheet" href="css/letter_style.css">
     <style>
-        :root {
-            --signify-blue: #648FFF;
-            --signify-dark: #1e293b;
-            --signify-accent: #FE6100;
-            --signify-light: #f8fafc;
-            --text-high-contrast: #0f172a;
-        }
+        :root { --signify-blue: #648FFF; --signify-dark: #1e293b; --signify-accent: #FE6100; --signify-light: #f8fafc; --text-high-contrast: #0f172a; }
+        .site-footer .copyright-text-wrap, .site-footer .copyright-text, .site-footer p { border: none !important; }
+        body { background-color: var(--signify-light); color: var(--text-high-contrast); }
+        .navbar-brand { color: var(--signify-blue) !important; font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 2rem; }
+        .navbar-nav .nav-link { color: var(--signify-blue) !important; }
+        .navbar-nav .nav-link.active, .navbar-nav .nav-link:hover { color: var(--signify-accent) !important; }
+        .custom-btn { background: var(--signify-blue); border-color: var(--signify-blue); color: white; font-weight: bold; }
+        .custom-btn:hover { background: var(--signify-dark); border-color: var(--signify-dark); color: white; }
+        button.custom-btn:hover, button.custom-btn:hover span { color: white !important; }
+        .dash-card { background: white; border-radius: 15px; border: 2px solid #e2e8f0; transition: transform 0.2s ease; }
+        .dash-card:hover { transform: translateY(-5px); border-color: var(--signify-blue); }
+        .icon-wrapper { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .progress { height: 25px; border-radius: 12px; background-color: #e2e8f0; }
+        .progress-bar { background-color: var(--signify-blue); font-weight: bold; }
+        .mySwiper { padding-bottom: 10px; }
+        .slider-card { border-radius: 20px; overflow: hidden; }
+        .slider-card img { width: 100%; height: 320px; object-fit: cover; }
+        .swiper-pagination-bullet { background: #ccc; opacity: 1; }
+        .swiper-pagination { position: relative !important; margin-top: 15px; text-align: center; }
+        .swiper-pagination-bullet-active { background: var(--signify-blue); transform: scale(1.2); }
+        .feature-banner { display: flex; align-items: center; gap: 14px; padding: 16px 20px; border-radius: 14px; background: #eef2ff; border: 1px solid rgba(100, 143, 255, 0.3); color: #1e293b; font-size: 14px; margin: 30px 0; flex-wrap: wrap; }
+        .feature-icon { width: 36px; height: 36px; border-radius: 10px; background: #648FFF; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+        .feature-text { flex: 1; }
+        .feature-btn { text-decoration: none; font-weight: 800; font-size: medium; color: #648FFF; white-space: nowrap; transition: 0.2s; }
+        .feature-btn:hover { text-decoration: underline; }
+        .site-footer { text-align: center; }
+        .copyright-text-wrap, .copyright-text { display: flex; justify-content: center; align-items: center; text-align: center; }
+        .text-block { position: relative; top: clamp(-50px, -5vw, -20px); left: 50%; padding-top: 20px; transform: translateX(-50%); width: 100%; text-align: center; z-index: 20; }
+        .typing-text { font-size: clamp(16px, 3vw, 24px); font-family: 'Courier New', monospace; color: #001180; display: inline-block; animation: floatText 3s ease-in-out infinite; white-space: nowrap; will-change: transform; text-shadow: 0 0 8px rgba(100, 143, 255, 0.6); }
+        @keyframes floatText { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+        #pageLoader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f8fafc; display: none; justify-content: center; align-items: center; z-index: 99999; }
+        .loader-container {position: relative;width: 260px;height: 260px;}
+        .loader {position: absolute;width: 100%;height: 100%;}
+        .hand1, .hand2, .hand3 {position: absolute; font-size: 2.8em;}
+        .hand1 {top: 1%;left: 50%;transform: translateX(-50%);animation: floatTop 2s ease-in-out infinite;}
+        .hand2 {top: 25%;left: 38%;transform: translateX(-50%);animation: bounceLine 1.6s ease-in-out infinite;}
+        .hand3 {top: 25%;left: 62%;transform: translateX(-50%);animation: bounceLine 1.6s ease-in-out infinite 0.2s;}
+        .loader-progress-bar {position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);width: 180px;height: 8px;background: rgba(100,143,255,0.2);border-radius: 5px;overflow: hidden;box-shadow: 0 2px 0 rgba(0,0,0,0.1);}
 
-        .site-footer .copyright-text-wrap {
-            border: none !important;
-        }
+.loader-progress {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #648FFF, #1e40af);
+  transition: width 0.3s ease;
+}
 
-        .site-footer .copyright-text {
-            border: none !important;
-        }
+.loading-text {
+  position: absolute;
+  top: 60%;             
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
 
-        .site-footer p {
-            border: none !important;
-        }
+/* ANIMATIONS */
+@keyframes spinHand {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
 
-        body {
-            background-color: var(--signify-light);
-            color: var(--text-high-contrast);
-        }
+@keyframes slideHand {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
 
-        .navbar-brand {
-            color: var(--signify-blue) !important;
-            font-family: 'Quicksand', sans-serif;
-            font-weight: 700;
-            font-size: 2rem;
-        }
+@keyframes bounceHand {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-25px); }
+}
 
-        .navbar-nav .nav-link {
-            color: var(--signify-blue) !important;
-        }
+@keyframes bounceLine {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-25px) scale(1.1);
+  }
+}
 
-        .navbar-nav .nav-link.active,
-        .navbar-nav .nav-link:hover {
-            color: var(--signify-accent) !important;
-        }
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
 
-        .custom-btn {
-            background: var(--signify-blue);
-            border-color: var(--signify-blue);
-            color: white;
-            font-weight: bold;
-        }
+@keyframes floatTop {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-12px);
+  }
+}
 
-        .custom-btn:hover {
-            background: var(--signify-dark);
-            border-color: var(--signify-dark);
-            color: white;
-        }
-
-        button.custom-btn:hover {
-            color: white !important;
-        }
-
-        button.custom-btn:hover span,
-        button.custom-btn:hover {
-            color: white !important;
-        }
-
-        .dash-card {
-            background: white;
-            border-radius: 15px;
-            border: 2px solid #e2e8f0;
-            transition: transform 0.2s ease;
-        }
-
-        .dash-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--signify-blue);
-        }
-
-        .icon-wrapper {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-
-        .progress {
-            height: 25px;
-            border-radius: 12px;
-            background-color: #e2e8f0;
-        }
-
-        .progress-bar {
-            background-color: var(--signify-blue);
-            font-weight: bold;
-        }
-
-        .mySwiper {
-            padding-bottom: 10px;
-        }
-
-        .slider-card {
-            border-radius: 20px;
-            overflow: hidden;
-        }
-
-        .slider-card img {
-            width: 100%;
-            height: 320px;
-            object-fit: cover;
-        }
-
-        .swiper-pagination-bullet {
-            background: #ccc;
-            opacity: 1;
-        }
-
-        .swiper-pagination {
-            position: relative !important;
-            margin-top: 15px;
-            text-align: center;
-        }
-
-        .swiper-pagination-bullet-active {
-            background: var(--signify-blue);
-            transform: scale(1.2);
-        }
-
-        .feature-banner {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 16px 20px;
-            border-radius: 14px;
-            background: #eef2ff;
-            border: 1px solid rgba(100, 143, 255, 0.3);
-            color: #1e293b;
-            font-size: 14px;
-            margin: 30px 0;
-            flex-wrap: wrap;
-        }
-
-        .feature-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            background: #648FFF;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            flex-shrink: 0;
-        }
-
-        .feature-text {
-            flex: 1;
-        }
-
-        .feature-btn {
-            text-decoration: none;
-            font-weight: 800;
-            font-size: medium;
-            color: #648FFF;
-            white-space: nowrap;
-            transition: 0.2s;
-        }
-
-        .feature-btn:hover {
-            text-decoration: underline;
-        }
-
-        .site-footer {
-            text-align: center;
-        }
-
-        .copyright-text-wrap {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .copyright-text {
-            text-align: center;
-        }
-
-        .text-block {
-            position: relative;
-            top: clamp(-50px, -5vw, -20px);
-            /* 🔥 responsive positioning */
-            left: 50%;
-            padding-top: 20px;
-            transform: translateX(-50%);
-            width: 100%;
-            text-align: center;
-            z-index: 20;
-        }
-
-        .typing-text {
-            font-size: clamp(16px, 3vw, 24px);
-            font-family: 'Courier New', monospace;
-            color: #001180;
-            display: inline-block;
-            animation: floatText 3s ease-in-out infinite;
-            white-space: nowrap;
-            /* prevent ugly wrapping */
-            will-change: transform;
-        }
-
-        @keyframes floatText {
-            0% {
-                transform: translateY(0px);
-            }
-
-            50% {
-                transform: translateY(-10px);
-            }
-
-            100% {
-                transform: translateY(0px);
-            }
-        }
-
-        .typing-text {
-            text-shadow: 0 0 8px rgba(100, 143, 255, 0.6);
-        }
-
-        .rank-1 { color: #f59e0b; }
-        .rank-2 { color: #94a3b8; }
-        .rank-3 { color: #b45309; }
+@keyframes textPulse {
+  0%,100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+        .rank-1 { color: #f59e0b; } .rank-2 { color: #94a3b8; } .rank-3 { color: #b45309; }
     </style>
 </head>
-
 <body>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <div id="envelopePopup">
+        <div class="envelope-container">
+            <div class="envelope-wrapper">
+                <div class="envelope">
+                    <div class="letter">
+                        <div class="text">
+                            <strong id="letterTitle">Dear Learner 💙</strong>
+                            <p id="letterMessage">Message here...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="heart"></div>
+            </div>
+        </div>
+    </div>
+    <div id="pageLoader">
+  <div class="loader-container">
+    <div class="loader">
+      <div class="hand1">🤟</div>
+      <div class="hand2">✋</div>
+      <div class="hand3">👍</div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const swiper = new Swiper(".mySwiper", {
-                loop: true,
-                autoplay: {
-                    delay: 2000,
-                    disableOnInteraction: false,
-                },
-                pagination: {
-                    el: ".swiper-pagination",
-                    clickable: true,
-                },
-            });
-        });
-    </script>
+      <div class="loader-progress-bar">
+        <div class="loader-progress"></div>
+      </div>
 
+      <div class="loading-text">Preparing your learning space...</div>
+    </div>
+  </div>
+</div>
     <nav class="navbar navbar-expand-lg bg-white shadow-sm">
         <div class="container">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -293,24 +171,12 @@
             </div>
         </div>
     </nav>
-
     <main class="container" style="padding-top:100px;padding-bottom:60px;">
-
         <div class="feature-banner">
-            <div class="feature-icon">
-                <i class="bi bi-robot"></i>
-            </div>
-            <div class="feature-text">
-                <b>SignAI Live Translator</b> - Convert Sign language into Speech instantly with AI Translation
-            </div>
+            <div class="feature-icon"><i class="bi bi-robot"></i></div>
+            <div class="feature-text"><b>SignAI Live Translator</b> - Convert Sign language into Speech instantly with AI Translation</div>
             <a href="#" id="tryNowBtn" class="feature-btn">Try Now →</a>
         </div>
-
-        <div id="loadingView" class="text-center py-5" style="display:none;">
-            <div class="spinner-border text-primary" role="status"></div>
-            <p class="mt-2">Loading your progress...</p>
-        </div>
-
         <div id="returningUserView" style="display:none;">
             <div class="row mb-5 align-items-center">
                 <div class="col-md-8">
@@ -323,161 +189,94 @@
                     </a>
                 </div>
             </div>
-
             <div class="row g-4 mb-5">
                 <div class="col-md-4">
                     <div class="dash-card p-4 shadow-sm h-100 d-flex align-items-center">
-                        <div class="icon-wrapper me-3" style="background-color:#fff4eb;color:#FE6100;">
-                            <span class="material-icons">whatshot</span>
-                        </div>
-                        <div>
-                            <h3 class="mb-0 fw-bold" id="stat-streak">0 Days</h3>
-                            <p class="mb-0 text-muted small">Current Streak</p>
-                        </div>
+                        <div class="icon-wrapper me-3" style="background-color:#fff4eb;color:#FE6100;"><span class="material-icons">whatshot</span></div>
+                        <div><h3 class="mb-0 fw-bold" id="stat-streak">0 Days</h3><p class="mb-0 text-muted small">Current Streak</p></div>
                     </div>
                 </div>
-
                 <div class="col-md-4">
                     <div class="dash-card p-4 shadow-sm h-100 d-flex align-items-center">
-                        <div class="icon-wrapper me-3" style="background-color:#fffbeb;color:#FFB000;">
-                            <span class="material-icons">bolt</span>
-                        </div>
-                        <div>
-                            <h3 class="mb-0 fw-bold" id="stat-xp">0 XP</h3>
-                            <p class="mb-0 text-muted small">Total XP</p>
-                        </div>
+                        <div class="icon-wrapper me-3" style="background-color:#fffbeb;color:#FFB000;"><span class="material-icons">bolt</span></div>
+                        <div><h3 class="mb-0 fw-bold" id="stat-xp">0 XP</h3><p class="mb-0 text-muted small">Total XP</p></div>
                     </div>
                 </div>
-
                 <div class="col-md-4">
                     <div class="dash-card p-4 shadow-sm h-100 d-flex align-items-center">
-                        <div class="icon-wrapper me-3" style="background-color:#ffebf7;color:#DC267F;">
-                            <span class="material-icons">emoji_events</span>
-                        </div>
-                        <div>
-                            <h3 class="mb-0 fw-bold" id="stat-rank">—</h3>
-                            <p class="mb-0 text-muted small">Global Leaderboard</p>
-                        </div>
+                        <div class="icon-wrapper me-3" style="background-color:#ffebf7;color:#DC267F;"><span class="material-icons">emoji_events</span></div>
+                        <div><h3 class="mb-0 fw-bold" id="stat-rank">—</h3><p class="mb-0 text-muted small">Global Leaderboard</p></div>
                     </div>
                 </div>
             </div>
-
             <div class="row g-4">
                 <div class="col-lg-7">
                     <div class="dash-card p-4 shadow-sm h-100">
                         <h4 class="fw-bold mb-4">Current Module: ASL Alphabet</h4>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span>Letters A – Z</span>
-                            <strong id="progress-AtoZ-text">0%</strong>
-                        </div>
-                        <div class="progress mb-4">
-                            <div id="progress-AtoZ-bar" class="progress-bar" role="progressbar" style="width:0%;"></div>
-                        </div>
-                        <a href="learn.html" id="next-lesson-btn" class="btn btn-outline-primary w-100 fw-bold" style="border-color:var(--signify-blue);color:var(--signify-blue);">
-                            Jump to Next Letter
-                        </a>
+                        <div class="d-flex justify-content-between mb-2"><span>Letters A – Z</span><strong id="progress-AtoZ-text">0%</strong></div>
+                        <div class="progress mb-4"><div id="progress-AtoZ-bar" class="progress-bar" role="progressbar" style="width:0%;"></div></div>
+                        <a href="learn.html" id="next-lesson-btn" class="btn btn-outline-primary w-100 fw-bold" style="border-color:var(--signify-blue);color:var(--signify-blue);">Jump to Next Letter</a>
                     </div>
                 </div>
-
                 <div class="col-lg-5">
                     <div class="dash-card p-4 shadow-sm h-100">
                         <h4 class="fw-bold mb-4">Top Learners</h4>
                         <ul class="list-group list-group-flush" id="mini-leaderboard"></ul>
-                        <a href="leaderboard.html" class="text-decoration-none small d-block text-center mt-3" style="color:var(--signify-blue);">
-                            View Full Leaderboard &rarr;
-                        </a>
+                        <a href="leaderboard.html" class="text-decoration-none small d-block text-center mt-3" style="color:var(--signify-blue);">View Full Leaderboard &rarr;</a>
                     </div>
                 </div>
             </div>
         </div>
-
         <div id="newUserView" style="display:none;">
             <div class="row align-items-center" style="min-height:70vh;">
                 <div class="col-lg-6 text-center text-lg-start mb-5 mb-lg-0">
-                    <span class="badge px-3 py-2 mb-3" style="background-color:var(--signify-accent);color:var(--text-high-contrast);">
-                        Free &amp; Accessible Education
-                    </span>
-                    <h1 class="display-4 fw-bold mb-4" style="color:var(--signify-dark);">
-                        Learn Sign Language with Real-Time AI Feedback.
-                    </h1>
-                    <p class="lead mb-4 text-muted">
-                        Think of it like a typing game, but for your hands. Use your device's built-in camera to learn ASL interactively.
-                    </p>
+                    <span class="badge px-3 py-2 mb-3" style="background-color:var(--signify-accent);color:var(--text-high-contrast);">Free &amp; Accessible Education</span>
+                    <h1 class="display-4 fw-bold mb-4" style="color:var(--signify-dark);">Learn Sign Language with Real-Time AI Feedback.</h1>
+                    <p class="lead mb-4 text-muted">Think of it like a typing game, but for your hands. Use your device's built-in camera to learn ASL interactively.</p>
                     <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start">
-                        <button class="custom-btn btn btn-lg px-5 py-3 shadow profile-icon-btn">
-                            <i class="bi bi-person-circle me-2"></i> Sign in to Start
-                        </button>
+                        <button class="custom-btn btn btn-lg px-5 py-3 shadow profile-icon-btn"><i class="bi bi-person-circle me-2"></i> Sign in to Start</button>
                     </div>
                 </div>
-
                 <div class="col-lg-6">
                     <div class="swiper mySwiper">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide slider-card">
-                                <img src="images/image.png">
-                            </div>
-                            <div class="swiper-slide slider-card">
-                                <img src="images/image02.png">
-                            </div>
+                            <div class="swiper-slide slider-card"><img src="images/image.png"></div>
+                            <div class="swiper-slide slider-card"><img src="images/image02.png"></div>
                         </div>
                         <div class="swiper-pagination"></div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div id="gamePromoSection">
+        <div id="gamePromoSection" style="display:none;">
             <section style="margin-top: 10px; padding: 0; position: relative;">
-                <div class="text-block">
-                    <div class="typing-text" id="typingText">
-                        Practice ASL with Gamified Experience!
-                    </div>
-                </div>
-
-                <img src="images/signsprites.png" style="
-                    width: 100%;
-                    height: auto;
-                    border-radius: 20px;
-                    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-                    display: block;
-                " />
-
-                <img id="playBtn" src="images/play.png" style="
-                    position: absolute;
-                    top: 60%;
-                    left: 80%;
-                    transform: translate(-50%, -50%);
-                    width: 370px;
-                    max-width: 30%;
-                    max-height: fit-content;
-                    cursor: pointer;
-                    z-index: 10;
-                " />
+                <div class="text-block"><div class="typing-text" id="typingText">Practice ASL with Gamified Experience!</div></div>
+                <img src="images/signsprites.png" style="width: 100%; height: auto; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: block;" />
+                <img id="playBtn" src="images/play.png" style="position: absolute; top: 60%; left: 80%; transform: translate(-50%, -50%); width: 370px; max-width: 30%; max-height: fit-content; cursor: pointer; z-index: 10;" />
             </section>
         </div>
-
     </main>
-
     <footer class="site-footer">
         <div class="container text-center">
             <div class="row justify-content-center">
                 <div class="col-lg-12 col-12">
                     <div class="copyright-text-wrap text-center">
-                        <p class="mb-0 text-center">
-                            Built with ❤️ by Team <span class="text-primary">SHE BYTES</span>
-                        </p>
+                        <p class="mb-0 text-center">Built with ❤️ by Team <span class="text-primary">SHE BYTES</span></p>
                     </div>
                 </div>
             </div>
         </div>
     </footer>
-
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            new Swiper(".mySwiper", { loop: true, autoplay: { delay: 2000, disableOnInteraction: false }, pagination: { el: ".swiper-pagination", clickable: true } });
+        });
+    </script>
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/custom.js"></script>
     <script type="module" src="js/firebase-auth.js"></script>
     <script type="module" src="js/home.js"></script>
-
 </body>
-
 </html>

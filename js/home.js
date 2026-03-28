@@ -10,6 +10,7 @@ import {
   getDocs
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+/* 🔥 FIREBASE CONFIG */
 const firebaseConfig = {
   apiKey: "AIzaSyAtvEg9LMPYz_ksNsPkWXjSof85XD0BhWc",
   authDomain: "signify-0326.firebaseapp.com",
@@ -24,49 +25,94 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+/* =========================================================
+   🔄 LOADER CONTROL (GLOBAL - RUNS ONLY ONCE)
+========================================================= */
+const loader = document.getElementById("pageLoader");
+
+function startLoaderAnimation() {
+  const progressBar = document.querySelector('.progress');
+  let width = 0;
+
+  const interval = setInterval(() => {
+    if (width >= 100) {
+      clearInterval(interval);
+    } else {
+      width++;
+      if (progressBar) {
+        progressBar.style.width = width + "%";
+      }
+    }
+  }, 20);
+}
+
+/* =========================================================
+   🔐 AUTH STATE
+========================================================= */
 onAuthStateChanged(auth, async (user) => {
-  const returningUserView = document.getElementById('returningUserView');
-  const newUserView = document.getElementById('newUserView');
-  const loadingView = document.getElementById('loadingView');
+  const returningUserView = document.getElementById("returningUserView");
+  const newUserView = document.getElementById("newUserView");
+  const loadingView = document.getElementById("loadingView");
   const gameSection = document.getElementById("gamePromoSection");
 
-  onAuthStateChanged(auth, (user) => {
-    if (gameSection) {
-      gameSection.style.display = user ? "none" : "block";
-    }
-  });
+  if (gameSection) {
+    gameSection.style.display = user ? "none" : "block";
+  }
 
-  if (!returningUserView || !newUserView || !loadingView) return;
+  if (!returningUserView || !newUserView) return;
 
   if (user) {
-    newUserView.style.display = 'none';
-    loadingView.style.display = 'block';
+    // 👤 Name
+    const name = user.displayName || user.email?.split("@")[0] || "Learner";
+    document.getElementById("letterTitle").innerText = `Hey ${name} ✨`;
 
+    // ❌ hide everything first
+    newUserView.style.display = "none";
+    returningUserView.style.display = "none";
+
+    // ✅ show loader
+    loader.style.display = "flex";
+    startLoaderAnimation();
+
+    // 🔥 load data
     await loadUserData(user);
     await loadMiniLeaderboard(user.uid);
 
-    // Show dashboard FIRST, then rank is visible in the DOM
-    loadingView.style.display = 'none';
-    returningUserView.style.display = 'block';
+    // ✅ hide loader
+    loader.style.display = "none";
+
+    // ✅ show UI
+    returningUserView.style.display = "block";
+
+    // 💌 envelope
+    setTimeout(() => {
+      showEnvelope();
+      setupEnvelope();
+    }, 500);
 
   } else {
-    returningUserView.style.display = 'none';
-    loadingView.style.display = 'none';
-    newUserView.style.display = 'block';
+    returningUserView.style.display = "none";
+    newUserView.style.display = "block";
+    loader.style.display = "none";
   }
 });
 
+/* =========================================================
+   🔐 REQUIRE AUTH
+========================================================= */
 function requireAuth(action) {
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      action(); // user is logged in → proceed
+      action();
     } else {
-      // show your login modal
       document.querySelector(".profile-icon-btn").click();
     }
   });
 }
 
+/* =========================================================
+   🎮 BUTTONS
+========================================================= */
 document.getElementById("tryNowBtn").addEventListener("click", (e) => {
   e.preventDefault();
 
@@ -83,81 +129,127 @@ playBtn.addEventListener("click", () => {
   });
 });
 
-// 🔥 hover ON
 playBtn.addEventListener("mouseenter", () => {
   playBtn.src = "images/playhover.png";
 });
 
-// 🔥 hover OFF
 playBtn.addEventListener("mouseleave", () => {
   playBtn.src = "images/play.png";
 });
 
+/* =========================================================
+   📊 LOAD USER DATA
+========================================================= */
 async function loadUserData(user) {
   const userSnap = await getDoc(doc(db, "users", user.uid));
   if (!userSnap.exists()) return;
+
   const data = userSnap.data();
 
-  const streakEl = document.getElementById('stat-streak');
-  if (streakEl) streakEl.innerText = `${data.streak || 0} Days`;
+  document.getElementById("stat-streak").innerText =
+    `${data.streak || 0} Days`;
 
-  const xpEl = document.getElementById('stat-xp');
-  if (xpEl) xpEl.innerText = `${data.total_xp || 0} XP`;
+  document.getElementById("stat-xp").innerText =
+    `${data.total_xp || 0} XP`;
 
-  // Alphabet progress from subcollection
-  // const alphaSnap = await getDocs(collection(db, "users", user.uid, "alphabet")); not neccessary since it is not being used anymore in this way
-  const alphaMap = data.alphabet || {};
-  const learned = Object.values(alphaMap).filter(v => v === true).length;
+  const learned = Object.values(data.alphabet || {}).filter(v => v).length;
   const pct = Math.round((learned / 26) * 100);
 
-  const pAtoZText = document.getElementById('progress-AtoZ-text');
-  const pAtoZBar = document.getElementById('progress-AtoZ-bar');
-  if (pAtoZText) pAtoZText.innerText = `${pct}%`;
-  if (pAtoZBar) pAtoZBar.style.width = `${pct}%`;
+  document.getElementById("progress-AtoZ-text").innerText = `${pct}%`;
+  document.getElementById("progress-AtoZ-bar").style.width = `${pct}%`;
 
-  const nextBtn = document.getElementById('next-lesson-btn');
-  if (nextBtn) nextBtn.innerText = `Jump to Letter "${data.nextLetter || 'A'}"`;
+  document.getElementById("next-lesson-btn").innerText =
+    `Jump to Letter "${data.nextLetter || "A"}"`;
 }
 
+/* =========================================================
+   🏆 LEADERBOARD
+========================================================= */
 async function loadMiniLeaderboard(currentUid) {
-  const leaderboardEl = document.getElementById('mini-leaderboard');
-  if (!leaderboardEl) return;
+  const leaderboardEl = document.getElementById("mini-leaderboard");
+  leaderboardEl.innerHTML = "";
 
-  leaderboardEl.innerHTML = '';
+  const snap = await getDocs(
+    query(collection(db, "users"), orderBy("total_xp", "desc"))
+  );
 
-  // Single query for all users sorted by XP
-  const allSnap = await getDocs(query(collection(db, "users"), orderBy("total_xp", "desc")));
-  const allDocs = allSnap.docs;
+  const docs = snap.docs;
 
-  // True XP rank
-  const trueRank = allDocs.findIndex(d => d.id === currentUid) + 1;
-  console.log("trueRank:", trueRank, "uid:", currentUid);
-
-  // Top 4 mini leaderboard
-  allDocs.slice(0, 4).forEach((docSnap, i) => {
-    const rank = i + 1;
+  docs.slice(0, 4).forEach((docSnap, i) => {
     const data = docSnap.data();
     const isMe = docSnap.id === currentUid;
 
-    let iconHtml = `<span class="me-2 text-muted fw-bold">${rank}.</span>`;
-    if (rank === 1) iconHtml = `<span class="rank-1" style="display:inline-flex;align-items:center;gap:4px;"><span class="material-icons" style="font-size:18px;">emoji_events</span>1</span>`;
-    else if (rank === 2) iconHtml = `<span class="rank-2" style="display:inline-flex;align-items:center;gap:4px;"><span class="material-icons" style="font-size:18px;">emoji_events</span>2</span>`;
-    else if (rank === 3) iconHtml = `<span class="rank-3" style="display:inline-flex;align-items:center;gap:4px;"><span class="material-icons" style="font-size:18px;">emoji_events</span>3</span>`;
+    const li = document.createElement("li");
+    li.className = "list-group-item d-flex justify-content-between";
 
-    const displayName = data.displayName || data.email?.split('@')[0] || 'User';
-
-    const li = document.createElement('li');
-    li.className = `list-group-item d-flex justify-content-between align-items-center px-0 ${isMe ? 'bg-light rounded mt-2 p-2 border' : ''}`;
     li.innerHTML = `
-      <span style="display:inline-flex;align-items:center;center;gap:20px;">${iconHtml} ${isMe ? `<strong>${displayName} (You)</strong>` : displayName}</span>
-      <span class="badge rounded-pill" style="background-color:${isMe ? '#648FFF' : '#1e293b'};">
-        ${data.total_xp || 0} XP
-      </span>
+      <span>${data.displayName || "User"}</span>
+      <span>${data.total_xp || 0} XP</span>
     `;
+
     leaderboardEl.appendChild(li);
   });
 
-  // Set rank after everything is done
-  const rankEl = document.getElementById('stat-rank');
-  if (rankEl) rankEl.innerText = trueRank > 0 ? `Rank #${trueRank}` : 'Keep Learning!';
+  const rank =
+    docs.findIndex(d => d.id === currentUid) + 1;
+
+  document.getElementById("stat-rank").innerText =
+    rank > 0 ? `Rank #${rank}` : "Keep Learning!";
+}
+
+/* =========================================================
+   🤖 AI MESSAGE
+========================================================= */
+const HF_API_KEY = import.meta.env.HF_API_KEY;
+
+async function generateMessage() {
+  try {
+    const res = await fetch(
+      "https://api-inference.huggingface.co/models/google/flan-t5-base",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${HF_API_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          inputs: "Write a short motivational message under 8 words"
+        })
+      }
+    );
+
+    const data = await res.json();
+    return data[0]?.generated_text || "Keep going 💙";
+  } catch {
+    return "You’re doing amazing 💙";
+  }
+}
+
+/* =========================================================
+   💌 ENVELOPE
+========================================================= */
+async function showEnvelope() {
+  const popup = document.getElementById("envelopePopup");
+  const messageEl = document.getElementById("letterMessage");
+
+  popup.style.display = "flex";
+  messageEl.innerText = "Loading... ✨";
+
+  const msg = await generateMessage();
+  messageEl.innerText = msg;
+}
+
+function setupEnvelope() {
+  const wrapper = document.querySelector(".envelope-wrapper");
+  const heart = document.querySelector(".heart");
+  const popup = document.getElementById("envelopePopup");
+
+  heart.addEventListener("click", () => {
+    wrapper.classList.toggle("flap");
+
+    setTimeout(() => {
+      popup.style.display = "none";
+      wrapper.classList.remove("flap");
+    }, 2500);
+  });
 }
