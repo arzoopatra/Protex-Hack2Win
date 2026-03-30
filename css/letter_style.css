@@ -1,183 +1,169 @@
-:root {
-    --primary: #fff;
-    --bg-envelope-color: #f5edd1;
-    --envelope-tab: #ecdeb8;
-    --envelope-cover: #e6cfa7;
-    --shadow-color: rgba(0, 0, 0, 0.2);
-    --txt-color: #444;
-    --heart-color: rgb(252, 8, 231);
+:root{
+  --primary: #fff;
+  --bg-envelope-color: #f5edd1;
+  --envelope-tab: #ecdeb8;
+  --envelope-cover: #e6cfa7;
+  --shadow-color: rgba(0, 0, 0, 0.2);
+  --txt-color: #444;
+  --heart-color: rgb(252, 8, 231);
 }
 
-/* 🌑 POPUP OVERLAY (PERFECT CENTER) */
+/* 🌑 POPUP OVERLAY */
 #envelopePopup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 
-    display: none;
-    justify-content: center;
-    align-items: center;
+  display: none;
+  justify-content: center;
+  align-items: center;
 
-    background: rgba(15, 23, 42, 0.7);
-    backdrop-filter: blur(6px);
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(6px);
 
-    z-index: 9999;
+  z-index: 9999;
 }
 
-/* 📦 CONTAINER (NO BOOTSTRAP CONFLICT) */
-.envelope-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* ✨ WRAPPER */
+/* 📦 WRAPPER */
 .envelope-wrapper {
-    background: var(--bg-envelope-color);
-    box-shadow: 0 0 40px var(--shadow-color);
-    animation: popUp 0.35s ease forwards;
+  background: var(--bg-envelope-color);
+  box-shadow: 0 0 40px var(--shadow-color);
+  animation: popUp 0.35s ease forwards;
+  position: relative;
 }
 
 /* 🎬 POP ANIMATION */
 @keyframes popUp {
-    from {
-        transform: scale(0.7);
-        opacity: 0;
-    }
-    to {
-        transform: scale(1);
-        opacity: 1;
-    }
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
-/* 📩 ENVELOPE BOX */
+/* 📩 ENVELOPE */
 .envelope {
-    position: relative;
-    width: 300px;
-    height: 230px;
+  position: relative;
+  width: 300px;
+  height: 230px;
 }
 
 /* 🔺 TOP FLAP */
 .envelope::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    z-index: 2;
-    border-top: 130px solid var(--envelope-tab);
-    border-right: 150px solid transparent;
-    border-left: 150px solid transparent;
-    transform-origin: top;
-    transition: all 0.5s ease-in-out 0.7s;
+  content: "";
+  position: absolute;
+  top: 0;
+  z-index: 2;
+
+  border-top: 130px solid var(--envelope-tab);
+  border-right: 150px solid transparent;
+  border-left: 150px solid transparent;
+
+  transform-origin: top;
+  transition: all 0.5s ease-in-out 0.7s;
 }
 
 /* 📦 BODY */
 .envelope::after {
-    content: "";
-    position: absolute;
-    z-index: 2;
-    width: 0;
-    height: 0;
-    border-top: 130px solid transparent;
-    border-right: 150px solid var(--envelope-cover);
-    border-bottom: 100px solid var(--envelope-cover);
-    border-left: 150px solid var(--envelope-cover);
+  content: "";
+  position: absolute;
+  z-index: 2;
+
+  border-top: 130px solid transparent;
+  border-right: 150px solid var(--envelope-cover);
+  border-bottom: 100px solid var(--envelope-cover);
+  border-left: 150px solid var(--envelope-cover);
 }
 
-/* 📄 LETTER CARD */
+/* 📄 LETTER (🔥 FIXED PERFECTLY) */
 .envelope .letter {
-    position: absolute;
-    right: 20%;
-    bottom: 0;
-    width: 54%;
-    height: 80%;
-    background: var(--primary);
+  position: absolute;
 
-    display: flex;
-    flex-direction: column;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);   /* ✅ KEEP CENTER */
 
-    justify-content: flex-start; /* 🔥 push content UP */
-    align-items: flex-start;     /* 🔥 LEFT side */
+  width: 60%;
+  height: 80%;
+  background: var(--primary);
 
-    text-align: left;
-    transition: all 1s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
 
-    box-shadow: 0 0 10px var(--shadow-color);
-    padding: 12px 12px 8px 12px; 
-    border-radius: 10px;
+  padding: 14px 12px;
+  border-radius: 10px;
+
+  text-align: left;
+  box-shadow: 0 10px 25px var(--shadow-color);
+
+  transition: all 1s ease-in-out;
 }
 
-/* 💌 TEXT CONTAINER */
+/* 💌 TEXT */
 .text {
-    font-family: 'Dancing Script', cursive;
-    color: #2c2c2c;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* 🔥 LEFT */
-    gap: 2px;                /* 🔥 tight spacing */
-    width: 100%;
-}
-
-/* 👤 NAME */
-#letterTitle {
-    font-size: 12px;
-    font-weight: 600;
-}
-
-/* ✨ MESSAGE */
-#letterMessage {
-    font-size: 12px;
-    line-height: 1.4;
-    max-width: 90%;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--txt-color);
+  font-size: 12px;
+  line-height: 1.4;
 }
 
 /* ❤️ HEART BUTTON */
 .heart {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 15px;
-    height: 15px;
-    background: var(--heart-color);
-    z-index: 4;
-    transform: translate(-50%, -20%) rotate(-45deg);
-    transition: transform 0.5s ease-in-out 1s;
-    box-shadow: 0 1px 6px var(--shadow-color);
-    cursor: pointer;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  width: 15px;
+  height: 15px;
+
+  background: var(--heart-color);
+  z-index: 4;
+
+  transform: translate(-50%, -20%) rotate(-45deg);
+  transition: transform 0.5s ease-in-out;
+  box-shadow: 0 1px 6px var(--shadow-color);
+  cursor: pointer;
 }
 
 .heart::before,
 .heart::after {
-    content: "";
-    position: absolute;
-    width: 15px;
-    height: 15px;
-    background: var(--heart-color);
-    border-radius: 50%;
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background: var(--heart-color);
+  border-radius: 50%;
 }
 
 .heart::before {
-    top: -7.5px;
+  top: -7.5px;
 }
 
 .heart::after {
-    right: -7.5px;
+  right: -7.5px;
 }
 
 /* ✨ OPEN ANIMATION */
 .flap .envelope::before {
-    transform: rotateX(180deg);
-    z-index: 0;
+  transform: rotateX(180deg);
+  z-index: 0;
 }
 
-.flap .letter {
-    bottom: 100px;
-    transform: scale(1.5);
-    transition-delay: 1s;
+/* 🔥 FIXED OPEN LETTER ANIMATION */
+.flap .envelope .letter {
+  bottom: 130px;
+  transform: translateX(-50%) scale(1.25);  /* ✅ stays centered */
+  transition-delay: 1s;
 }
 
 .flap .heart {
-    transform: rotate(45deg);
-    transition-delay: 0.4s;
+  transform: rotate(45deg);
+  transition-delay: 0.4s;
 }

@@ -4,6 +4,8 @@ import {
   getApp
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 
+let isLoggingOut = false;
+
 import {
   getFirestore,
   doc,
@@ -229,21 +231,6 @@ document.addEventListener("click", function(e) {
 });
 
 // ── Auth Handlers ────────────────────────────────────────────
-
-window.handleSignIn = async function() {
-  const email = document.getElementById("siEmail").value.trim();
-  const password = document.getElementById("siPassword").value;
-  const errEl = document.getElementById("siError");
-  errEl.style.display = "none";
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-    closeModal();
-  } catch (err) {
-    errEl.textContent = friendlyError(err.code);
-    errEl.style.display = "block";
-  }
-};
-
 window.handleSignUp = async function() {
   const name = document.getElementById("suName").value.trim();
   const email = document.getElementById("suEmail").value.trim();
@@ -274,11 +261,27 @@ window.handleSignUp = async function() {
 };
 
 window.handleSignOut = async function() {
-  await signOut(auth);
+  const loader = document.getElementById("pageLoader");
+  const loaderText = document.getElementById("loaderText");
+
+  // 🔥 change text
+  if (loaderText) {
+    loaderText.innerText = "Logging you out...";
+  }
+
+  loader.style.display = "flex";
+
+  if (typeof startLoaderAnimation === "function") {
+    startLoaderAnimation();
+  }
+
   document.getElementById("profileDropdown").style.display = "none";
   dropdownOpen = false;
-};
 
+  setTimeout(async () => {
+    await signOut(auth);
+  }, 1200);
+};
 // ── Auth State Observer ──────────────────────────────────────
 
 onAuthStateChanged(auth, (user) => {

@@ -1,4 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+let loaderStartTime = 0;
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import {
   getFirestore,
@@ -31,7 +32,7 @@ const db = getFirestore(app);
 const loader = document.getElementById("pageLoader");
 
 function startLoaderAnimation() {
-  const progressBar = document.querySelector('.progress');
+  const progressBar = document.querySelector('.loader-progress');
   let width = 0;
 
   const interval = setInterval(() => {
@@ -50,6 +51,7 @@ function startLoaderAnimation() {
    🔐 AUTH STATE
 ========================================================= */
 onAuthStateChanged(auth, async (user) => {
+  isUserLoggedIn = !!user;
   const returningUserView = document.getElementById("returningUserView");
   const newUserView = document.getElementById("newUserView");
   const loadingView = document.getElementById("loadingView");
@@ -62,6 +64,9 @@ onAuthStateChanged(auth, async (user) => {
   if (!returningUserView || !newUserView) return;
 
   if (user) {
+    document.getElementById("loaderText").innerText =
+    "Preparing your learning space...";
+    
     // 👤 Name
     const name = user.displayName || user.email?.split("@")[0] || "Learner";
     document.getElementById("letterTitle").innerText = `Hey ${name} ✨`;
@@ -70,31 +75,47 @@ onAuthStateChanged(auth, async (user) => {
     newUserView.style.display = "none";
     returningUserView.style.display = "none";
 
-    // ✅ show loader
     loader.style.display = "flex";
-    startLoaderAnimation();
+loaderStartTime = Date.now();
 
-    // 🔥 load data
-    await loadUserData(user);
-    await loadMiniLeaderboard(user.uid);
+startLoaderAnimation();
 
-    // ✅ hide loader
-    loader.style.display = "none";
+// load data
+await loadUserData(user);
+await loadMiniLeaderboard(user.uid);
 
-    // ✅ show UI
-    returningUserView.style.display = "block";
+// timing logic
+const elapsed = Date.now() - loaderStartTime;
+const remaining = Math.max(5000 - elapsed, 0);
 
-    // 💌 envelope
-    setTimeout(() => {
-      showEnvelope();
-      setupEnvelope();
-    }, 500);
+setTimeout(() => {
+  loader.style.display = "none";
+  returningUserView.style.display = "block";
+
+  // 💌 envelope AFTER loader
+  setTimeout(() => {
+    showEnvelope();
+    setupEnvelope();
+  }, 500);
+
+}, remaining);
 
   } else {
-    returningUserView.style.display = "none";
-    newUserView.style.display = "block";
+  returningUserView.style.display = "none";
+  newUserView.style.display = "block";
+
+  const isLoggingOut = localStorage.getItem("isLoggingOut");
+
+  if (isLoggingOut === "true") {
+    // 🌀 keep loader for smooth logout
+    setTimeout(() => {
+      loader.style.display = "none";
+      localStorage.removeItem("isLoggingOut"); // reset
+    }, 800);
+  } else {
     loader.style.display = "none";
   }
+}
 });
 
 /* =========================================================
@@ -244,12 +265,24 @@ function setupEnvelope() {
   const heart = document.querySelector(".heart");
   const popup = document.getElementById("envelopePopup");
 
-  heart.addEventListener("click", () => {
-    wrapper.classList.toggle("flap");
+  // 💌 OPEN
+  setTimeout(() => {
+    wrapper.classList.add("flap");
+  }, 300);
 
+  heart.addEventListener("click", () => {
+
+    // ✉️ STEP 1: close envelope first
+    wrapper.classList.remove("flap");
+
+    // ❤️ STEP 2: AFTER envelope starts closing → reset heart
+    setTimeout(() => {
+      heart.style.transform = "translate(-50%, -20%) rotate(-45deg)";
+    }, 500); // delay = after flap starts closing
+
+    // 🧼 STEP 3: hide popup after everything finishes
     setTimeout(() => {
       popup.style.display = "none";
-      wrapper.classList.remove("flap");
-    }, 2500);
+    }, 1300);
   });
 }
