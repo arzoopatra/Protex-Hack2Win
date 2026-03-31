@@ -96,10 +96,12 @@ setTimeout(() => {
   loader.style.display = "none";
   returningUserView.style.display = "block";
 
-  // 💌 envelope AFTER loader
-  setTimeout(() => {
-    showEnvelope();
-    setupEnvelope();
+  setTimeout(async () => {
+    const shown = await showEnvelope();
+
+    if (shown) {
+      setupEnvelope();
+    }
   }, 500);
 
 }, remaining);
@@ -236,9 +238,15 @@ async function generateMessage() {
 }
 
 /* =========================================================
-   💌 ENVELOPE
+   💌 ENVELOPE (SHOW ONLY ONCE PER DAY)
 ========================================================= */
 async function showEnvelope() {
+  const today = new Date().toDateString();
+  const lastShown = localStorage.getItem("letter-shown-date");
+
+  // ❌ already shown today
+  if (lastShown === today) return false;
+
   const popup = document.getElementById("envelopePopup");
   const messageEl = document.getElementById("letterMessage");
 
@@ -247,8 +255,13 @@ async function showEnvelope() {
 
   const msg = await generateMessage();
   messageEl.innerText = msg;
+
+  return true; // ✅ means shown
 }
 
+/* =========================================================
+   💌 ENVELOPE SETUP (NO DUPLICATE EVENTS)
+========================================================= */
 function setupEnvelope() {
   const wrapper = document.querySelector(".envelope-wrapper");
   const heart = document.querySelector(".heart");
@@ -259,19 +272,33 @@ function setupEnvelope() {
     wrapper.classList.add("flap");
   }, 300);
 
-  heart.addEventListener("click", () => {
+  // 🧹 REMOVE OLD EVENT LISTENER (VERY IMPORTANT)
+  const newHeart = heart.cloneNode(true);
+  heart.parentNode.replaceChild(newHeart, heart);
 
-    // ✉️ STEP 1: close envelope first
-    wrapper.classList.remove("flap");
+   newHeart.addEventListener("click", () => {
+  const today = new Date().toDateString();
 
-    // ❤️ STEP 2: AFTER envelope starts closing → reset heart
-    setTimeout(() => {
-      heart.style.transform = "translate(-50%, -20%) rotate(-45deg)";
-    }, 500); // delay = after flap starts closing
+  // ✅ mark as seen
+  localStorage.setItem("letter-shown-date", today);
 
-    // 🧼 STEP 3: hide popup after everything finishes
-    setTimeout(() => {
-      popup.style.display = "none";
-    }, 1300);
-  });
+  // ❌ prevent spam clicking
+  newHeart.style.pointerEvents = "none";
+
+  // ✉️ STEP 1: close envelope FIRST
+  wrapper.classList.remove("flap");
+
+  // ❤️ STEP 2: AFTER envelope closes → reset heart
+  setTimeout(() => {
+    newHeart.style.transform = "translate(-50%, -20%) rotate(-45deg)";
+  }, 800);
+
+  // 🧼 STEP 3: hide popup AFTER everything
+  setTimeout(() => {
+    popup.style.display = "none";
+
+    // reset for next open
+    newHeart.style.pointerEvents = "auto";
+  }, 1500);
+});
 }
